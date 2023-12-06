@@ -1,4 +1,4 @@
-package com.mi.appWords.repositories;
+package com.my.appWords.repositories;
 
 public interface PlayerRepository {
 }

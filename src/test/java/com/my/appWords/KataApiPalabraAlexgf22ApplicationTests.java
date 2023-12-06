@@ -1,4 +1,4 @@
-package com.mi.appWords;
+package com.my.appWords;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

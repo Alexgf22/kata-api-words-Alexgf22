@@ -1,4 +1,4 @@
-package com.mi.appWords.config;
+package com.my.appWords.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

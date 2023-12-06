@@ -1,11 +1,11 @@
-package com.mi.appWords;
+package com.my.appWords;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"com.mi.appWords.controllers", "com.mi.appWords.repositories", "com.mi.appWords.models", "com.mi.appWords.services"})
+@ComponentScan(basePackages = {"com.my.appWords.controllers", "com.my.appWords.repositories", "com.my.appWords.models", "com.my.appWords.services"})
 public class KataApiPalabraApplication {
 
     public static void main(String[] args) {
