@@ -1,0 +1,21 @@
+version: "3.1"
+services:
+
+  db:
+    image: mysql:latest
+    environment:
+      MYSQL_ROOT_PASSWORD: Super
+      MYSQL_DATABASE: wordleApi
+    volumes:
+      - ./initSQL:/docker-entrypoint-initdb.d
+    ports:
+      - "3306:3306"
+
+  adminer:
+    image: adminer:latest
+    ports:
+      - "8888:8081"
+
+
+
+
