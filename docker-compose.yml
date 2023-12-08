@@ -11,10 +11,7 @@ services:
     ports:
       - "3307:3306"
 
-  adminer:
-    image: adminer:latest
-    ports:
-      - "8888:8081"
+
 
 
 
