@@ -11,7 +11,7 @@ public class GameNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 111111111L;
 
-    public GameNotFoundException(Long id) {
-        super("No se puede encontrar el juego con Id: " + id);
+    public GameNotFoundException(Long idGame) {
+        super("No se puede encontrar el juego con Id: " + idGame);
     }
 }

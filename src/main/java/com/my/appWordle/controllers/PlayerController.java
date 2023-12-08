@@ -18,9 +18,9 @@ public class PlayerController {
         return playerRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Player getPlayerById(@PathVariable Long id) {
-        return playerRepository.findById(id).orElse(null);
+    @GetMapping("/{idPlayer}")
+    public Player getPlayerById(@PathVariable Long idPlayer) {
+        return playerRepository.findById(idPlayer).orElse(null);
     }
 
     @PostMapping
@@ -28,15 +28,15 @@ public class PlayerController {
         return playerRepository.save(player);
     }
 
-    @PutMapping("/{id}")
-    public Player updatePlayer(@PathVariable Long id, @RequestBody Player player) {
-        //player.setIdPlayer(id);
+    @PutMapping("/{idPlayer}")
+    public Player updatePlayer(@PathVariable Long idPlayer, @RequestBody Player player) {
+        player.setIdPlayer(idPlayer);
         return playerRepository.save(player);
     }
 
-    @DeleteMapping("/{id}")
-    public void deletePlayer(@PathVariable Long id) {
-        playerRepository.deleteById(id);
+    @DeleteMapping("/{idPlayer}")
+    public void deletePlayer(@PathVariable Long idPlayer) {
+        playerRepository.deleteById(idPlayer);
     }
 }
 

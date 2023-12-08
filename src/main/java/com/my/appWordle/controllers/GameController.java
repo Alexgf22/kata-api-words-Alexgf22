@@ -18,9 +18,9 @@ public class GameController {
         return gameRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Game getGameById(@PathVariable Long id) {
-        return gameRepository.findById(id).orElse(null);
+    @GetMapping("/{idGame}")
+    public Game getGameById(@PathVariable Long idGame) {
+        return gameRepository.findById(idGame).orElse(null);
     }
 
     @PostMapping
@@ -28,15 +28,15 @@ public class GameController {
         return gameRepository.save(game);
     }
 
-    @PutMapping("/{id}")
-    public Game updateGame(@PathVariable Long id, @RequestBody Game game) {
-        //game.setIdGame(id);
+    @PutMapping("/{idGame}")
+    public Game updateGame(@PathVariable Long idGame, @RequestBody Game game) {
+        game.setIdGame(idGame);
         return gameRepository.save(game);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteGame(@PathVariable Long id) {
-        gameRepository.deleteById(id);
+    @DeleteMapping("/{idGame}")
+    public void deleteGame(@PathVariable Long idGame) {
+        gameRepository.deleteById(idGame);
     }
 }
 

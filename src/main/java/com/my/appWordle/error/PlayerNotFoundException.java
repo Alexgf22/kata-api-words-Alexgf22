@@ -11,7 +11,7 @@ public class PlayerNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 333333333L;
 
-    public PlayerNotFoundException(Long id) {
-        super("No se puede encontrar el jugador con Id: " + id);
+    public PlayerNotFoundException(Long idPlayer) {
+        super("No se puede encontrar el jugador con Id: " + idPlayer);
     }
 }

@@ -18,9 +18,9 @@ public class WordController {
         return wordRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Word getWordById(@PathVariable Long id) {
-        return wordRepository.findById(id).orElse(null);
+    @GetMapping("/{idWord}")
+    public Word getWordById(@PathVariable Long idWord) {
+        return wordRepository.findById(idWord).orElse(null);
     }
 
     @PostMapping
@@ -28,15 +28,15 @@ public class WordController {
         return wordRepository.save(word);
     }
 
-    @PutMapping("/{id}")
-    public Word updateWord(@PathVariable Long id, @RequestBody Word word) {
-        //word.setIdWord(id);
+    @PutMapping("/{idWord}")
+    public Word updateWord(@PathVariable Long idWord, @RequestBody Word word) {
+        word.setIdWord(idWord);
         return wordRepository.save(word);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteWord(@PathVariable Long id) {
-        wordRepository.deleteById(id);
+    @DeleteMapping("/{idWord}")
+    public void deleteWord(@PathVariable Long idWord) {
+        wordRepository.deleteById(idWord);
     }
 }
 

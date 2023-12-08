@@ -18,9 +18,9 @@ public class MatchController {
         return matchRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Match getMatchById(@PathVariable Long id) {
-        return matchRepository.findById(id).orElse(null);
+    @GetMapping("/{idMatch}")
+    public Match getMatchById(@PathVariable Long idMatch) {
+        return matchRepository.findById(idMatch).orElse(null);
     }
 
     @PostMapping
@@ -28,15 +28,15 @@ public class MatchController {
         return matchRepository.save(match);
     }
 
-    @PutMapping("/{id}")
-    public Match updateMatch(@PathVariable Long id, @RequestBody Match match) {
-        match.setIdMatch(id);
+    @PutMapping("/{idMatch}")
+    public Match updateMatch(@PathVariable Long idMatch, @RequestBody Match match) {
+        match.setIdMatch(idMatch);
         return matchRepository.save(match);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteMatch(@PathVariable Long id) {
-        matchRepository.deleteById(id);
+    @DeleteMapping("/{idMatch}")
+    public void deleteMatch(@PathVariable Long idMatch) {
+        matchRepository.deleteById(idMatch);
     }
 }
 

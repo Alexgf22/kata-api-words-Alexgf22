@@ -18,9 +18,9 @@ public class TeamController {
         return teamRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Team getTeamById(@PathVariable Long id) {
-        return teamRepository.findById(id).orElse(null);
+    @GetMapping("/{idTeam}")
+    public Team getTeamById(@PathVariable Long idTeam) {
+        return teamRepository.findById(idTeam).orElse(null);
     }
 
     @PostMapping
@@ -28,15 +28,15 @@ public class TeamController {
         return teamRepository.save(team);
     }
 
-    @PutMapping("/{id}")
-    public Team updateTeam(@PathVariable Long id, @RequestBody Team team) {
-        //team.setIdTeam(id);
+    @PutMapping("/{idTeam}")
+    public Team updateTeam(@PathVariable Long idTeam, @RequestBody Team team) {
+        team.setIdTeam(idTeam);
         return teamRepository.save(team);
     }
 
-    @DeleteMapping("/{id}")
-    public void deleteTeam(@PathVariable Long id) {
-        teamRepository.deleteById(id);
+    @DeleteMapping("/{idTeam}")
+    public void deleteTeam(@PathVariable Long idTeam) {
+        teamRepository.deleteById(idTeam);
     }
 }
 

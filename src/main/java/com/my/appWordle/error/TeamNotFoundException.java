@@ -11,7 +11,7 @@ public class TeamNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 444444444L;
 
-    public TeamNotFoundException(Long id) {
-        super("No se puede encontrar el equipo con Id: " + id);
+    public TeamNotFoundException(Long idTeam) {
+        super("No se puede encontrar el equipo con Id: " + idTeam);
     }
 }

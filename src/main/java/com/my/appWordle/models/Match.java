@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Match")
+@Table(name = "GameMatch")
 public class Match {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

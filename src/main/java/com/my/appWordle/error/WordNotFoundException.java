@@ -11,7 +11,7 @@ public class WordNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 555555555L;
 
-    public WordNotFoundException(Long id) {
-        super("No se puede encontrar la palabra con Id: " + id);
+    public WordNotFoundException(Long idWord) {
+        super("No se puede encontrar la palabra con Id: " + idWord);
     }
 }

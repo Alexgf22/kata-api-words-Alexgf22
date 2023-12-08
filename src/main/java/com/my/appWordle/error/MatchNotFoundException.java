@@ -11,7 +11,7 @@ public class MatchNotFoundException extends RuntimeException {
     @Serial
     private static final long serialVersionUID = 222222222L;
 
-    public MatchNotFoundException(Long id) {
-        super("No se puede encontrar el partido con Id: " + id);
+    public MatchNotFoundException(Long idMatch) {
+        super("No se puede encontrar el partido con Id: " + idMatch);
     }
 }
