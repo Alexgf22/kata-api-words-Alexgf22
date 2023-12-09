@@ -3,6 +3,8 @@ package com.my.appWordle.controllers;
 import com.my.appWordle.models.Player;
 import com.my.appWordle.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -14,29 +16,47 @@ public class PlayerController {
     private PlayerRepository playerRepository;
 
     @GetMapping
-    public List<Player> getAllPlayers() {
-        return playerRepository.findAll();
+    public ResponseEntity<List<Player>> getAllPlayers() {
+        List<Player> players = playerRepository.findAll();
+
+        if (players.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        } else {
+            return new ResponseEntity<>(players, HttpStatus.OK);
+        }
     }
 
     @GetMapping("/{idPlayer}")
-    public Player getPlayerById(@PathVariable Long idPlayer) {
-        return playerRepository.findById(idPlayer).orElse(null);
+    public ResponseEntity<Player> getPlayerById(@PathVariable Long idPlayer) {
+        Player player = playerRepository.findById(idPlayer).orElse(null);
+
+        if (player != null) {
+            return new ResponseEntity<>(player, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @PostMapping
-    public Player createPlayer(@RequestBody Player player) {
-        return playerRepository.save(player);
+    public ResponseEntity<Player> createPlayer(@RequestBody Player player) {
+        Player createdPlayer = playerRepository.save(player);
+        return new ResponseEntity<>(createdPlayer, HttpStatus.CREATED);
     }
 
     @PutMapping("/{idPlayer}")
-    public Player updatePlayer(@PathVariable Long idPlayer, @RequestBody Player player) {
+    public ResponseEntity<Player> updatePlayer(@PathVariable Long idPlayer, @RequestBody Player player) {
         player.setIdPlayer(idPlayer);
-        return playerRepository.save(player);
+        Player updatedPlayer = playerRepository.save(player);
+        return new ResponseEntity<>(updatedPlayer, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idPlayer}")
-    public void deletePlayer(@PathVariable Long idPlayer) {
-        playerRepository.deleteById(idPlayer);
+    public ResponseEntity<Void> deletePlayer(@PathVariable Long idPlayer) {
+        if (playerRepository.existsById(idPlayer)) {
+            playerRepository.deleteById(idPlayer);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
-
