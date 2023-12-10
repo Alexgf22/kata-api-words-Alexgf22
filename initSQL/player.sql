@@ -14,3 +14,10 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Player` (
             ON DELETE NO ACTION
             ON UPDATE NO ACTION
             ) ENGINE = InnoDB;
+
+
+INSERT INTO `wordleApi`.`Player` (`User_name`, `Score`, `Avatar_Img`, `Team_idTeam`)
+    VALUES
+         ('Usuario1', 100, null, 1),
+         ('Usuario2', 120, null, 1),
+         ('Usuario3', 80, null, 2)

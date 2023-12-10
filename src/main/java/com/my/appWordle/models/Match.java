@@ -26,7 +26,7 @@ public class Match {
     @ManyToOne
     @JoinColumns({
             @JoinColumn(name = "Player_idPlayer", referencedColumnName = "idPlayer"),
-            //@JoinColumn(name = "Player_Team_idTeam", referencedColumnName = "idTeam")
+            @JoinColumn(name = "Player_Team_idTeam", referencedColumnName = "idTeam")
     })
     private Player player;
 
