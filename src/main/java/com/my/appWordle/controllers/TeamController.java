@@ -3,6 +3,7 @@ package com.my.appWordle.controllers;
 import com.my.appWordle.models.Team;
 import com.my.appWordle.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,45 +19,36 @@ public class TeamController {
     @GetMapping
     public ResponseEntity<List<Team>> getAllTeams() {
         List<Team> teams = teamRepository.findAll();
-
-        if (teams.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(teams, HttpStatus.OK);
-        }
+        return teams.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(teams);
     }
 
     @GetMapping("/{idTeam}")
     public ResponseEntity<Team> getTeamById(@PathVariable Long idTeam) {
-        Team team = teamRepository.findById(idTeam).orElse(null);
-
-        if (team != null) {
-            return new ResponseEntity<>(team, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return teamRepository.findById(idTeam)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<Team> createTeam(@RequestBody Team team) {
         Team createdTeam = teamRepository.save(team);
-        return new ResponseEntity<>(createdTeam, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdTeam);
     }
 
     @PutMapping("/{idTeam}")
     public ResponseEntity<Team> updateTeam(@PathVariable Long idTeam, @RequestBody Team team) {
         team.setIdTeam(idTeam);
         Team updatedTeam = teamRepository.save(team);
-        return new ResponseEntity<>(updatedTeam, HttpStatus.OK);
+        return ResponseEntity.ok(updatedTeam);
     }
 
     @DeleteMapping("/{idTeam}")
     public ResponseEntity<Void> deleteTeam(@PathVariable Long idTeam) {
-        if (teamRepository.existsById(idTeam)) {
+        try {
             teamRepository.deleteById(idTeam);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }

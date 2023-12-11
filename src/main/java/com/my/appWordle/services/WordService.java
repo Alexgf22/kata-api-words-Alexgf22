@@ -10,7 +10,7 @@ import java.util.Random;
 
 public class WordService {
 
-    private List<String> wordList;
+    private static List<String> wordList;
 
     public WordService() {
         // Cargar palabras desde el archivo al inicializar el servicio
@@ -43,7 +43,34 @@ public class WordService {
     }
 
 
-    public List<String> getAllWords() {
+    public static List<String> getRandomWords(Long num) {
+        List<String> randomList = new ArrayList<>();
+        if (num > wordList.size()) {
+            num = (long) wordList.size();
+        }
+
+        for (int x = 0; x < num; x++) {
+            int random = (int) (Math.random() * wordList.size());
+            randomList.add(wordList.get(random));
+        }
+
+        return randomList;
+    }
+
+    public List<String> wordsStartWith(String prefix) throws IOException {
+        List<String> startingWordsList = new ArrayList<>();
+
+        for (String word : wordList) {
+            if (word.startsWith(prefix)) {
+                startingWordsList.add(word);
+            }
+        }
+
+        return startingWordsList;
+    }
+
+
+    public static List<String> getAllWords() {
         // Devolver la lista completa de palabras
         return new ArrayList<>(wordList);
     }
@@ -53,6 +80,8 @@ public class WordService {
         // Prueba de uso del servicio
         WordService wordService = new WordService();
         String randomWord = wordService.getRandomWord();
+
+        System.out.println(getRandomWords(10L));
 
         System.out.println("Palabra aleatoria: " + randomWord);
     }

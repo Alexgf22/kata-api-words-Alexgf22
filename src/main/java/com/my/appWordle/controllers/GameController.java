@@ -37,10 +37,15 @@ public class GameController {
 
     @PutMapping("/{idGame}")
     public ResponseEntity<Game> updateGame(@PathVariable Long idGame, @RequestBody Game game) {
+        if (idGame == null || game == null) {
+            return ResponseEntity.badRequest().build();  // Bad request si idGame o game son nulos
+        }
+
         game.setIdGame(idGame);
         Game updatedGame = gameRepository.save(game);
         return ResponseEntity.ok().body(updatedGame);
     }
+
 
     @DeleteMapping("/{idGame}")
     public ResponseEntity<Void> deleteGame(@PathVariable Long idGame) {

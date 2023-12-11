@@ -3,6 +3,7 @@ package com.my.appWordle.controllers;
 import com.my.appWordle.models.Word;
 import com.my.appWordle.repositories.WordRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,45 +19,36 @@ public class WordController {
     @GetMapping
     public ResponseEntity<List<Word>> getAllWords() {
         List<Word> words = wordRepository.findAll();
-
-        if (words.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(words, HttpStatus.OK);
-        }
+        return words.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(words);
     }
 
     @GetMapping("/{idWord}")
     public ResponseEntity<Word> getWordById(@PathVariable Long idWord) {
-        Word word = wordRepository.findById(idWord).orElse(null);
-
-        if (word != null) {
-            return new ResponseEntity<>(word, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return wordRepository.findById(idWord)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<Word> createWord(@RequestBody Word word) {
         Word createdWord = wordRepository.save(word);
-        return new ResponseEntity<>(createdWord, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdWord);
     }
 
     @PutMapping("/{idWord}")
     public ResponseEntity<Word> updateWord(@PathVariable Long idWord, @RequestBody Word word) {
         word.setIdWord(idWord);
         Word updatedWord = wordRepository.save(word);
-        return new ResponseEntity<>(updatedWord, HttpStatus.OK);
+        return ResponseEntity.ok(updatedWord);
     }
 
     @DeleteMapping("/{idWord}")
     public ResponseEntity<Void> deleteWord(@PathVariable Long idWord) {
-        if (wordRepository.existsById(idWord)) {
+        try {
             wordRepository.deleteById(idWord);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.noContent().build();
+        } catch (EmptyResultDataAccessException e) {
+            return ResponseEntity.notFound().build();
         }
     }
 }
