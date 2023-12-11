@@ -61,7 +61,7 @@ class PlayerControllerTest {
     @Test
     void getPlayerById_NotFound() {
         // Arrange
-        Long idPlayer = 1L;
+        Long idPlayer = 500L;
         when(playerRepository.findById(idPlayer)).thenReturn(Optional.empty());
 
         // Act
@@ -123,7 +123,7 @@ class PlayerControllerTest {
     @Test
     void deletePlayer_NotFound() {
         // Arrange
-        Long idPlayer = 1L;
+        Long idPlayer = 600L;
         lenient().when(playerRepository.existsById(idPlayer)).thenReturn(false);
 
         // Act

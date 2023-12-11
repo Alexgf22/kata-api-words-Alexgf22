@@ -112,9 +112,10 @@ class MatchesControllerTest {
     void deleteMatch() {
         // Arrange
         Long idMatch = 1L;
-        Matches existingMatches = createTestMatch("Word7", 100, 3, new Date(), createTestPlayer("TestUser 7", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 7", 100, new byte[]{/*imagen en bytes*/})), createTestGame(1L,5, "An example of a description 7", Difficulty.HARD));
+        Matches existingMatch = createTestMatch("Word7", 100, 3, new Date(), createTestPlayer("TestUser 7", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 7", 100, new byte[]{/*imagen en bytes*/})), createTestGame(1L,5, "An example of a description 7", Difficulty.HARD));
 
-        when(matchRepository.findById(idMatch)).thenReturn(Optional.of(existingMatches));
+        lenient().when(matchRepository.existsById(idMatch)).thenReturn(true);
+        lenient().when(matchRepository.findById(idMatch)).thenReturn(Optional.of(existingMatch));
 
         // Act
         ResponseEntity<Void> responseEntity = matchesController.deleteMatch(idMatch);
