@@ -1,33 +1,34 @@
 
 
-CREATE TABLE IF NOT EXISTS `wordleApi`.`Match` (
-       `idMatch` INT NOT NULL AUTO_INCREMENT,
-       `Word` VARCHAR(45) NULL,
-       `Score` INT NULL,
-       `N_tries` INT NULL,
-       `Date_time` DATETIME NULL,
-       `Player_idPlayer` INT NOT NULL,
-       `Player_Team_idTeam` INT NOT NULL,
-       `Game_idGame` INT NOT NULL,
-       PRIMARY KEY (`idMatch`),
-       INDEX `fk_Match_Player1_idx` (`Player_idPlayer` ASC, `Player_Team_idTeam` ASC) VISIBLE,
-       INDEX `fk_Match_Game1_idx` (`Game_idGame` ASC) VISIBLE,
-       CONSTRAINT `fk_Match_Player1`
-           FOREIGN KEY (`Player_idPlayer`, `Player_Team_idTeam`)
-               REFERENCES `wordleApi`.`Player` (`idPlayer`, `Team_idTeam`)
-               ON DELETE NO ACTION
-               ON UPDATE NO ACTION,
-       CONSTRAINT `fk_Match_Game1`
-           FOREIGN KEY (`Game_idGame`)
-               REFERENCES `wordleApi`.`Game` (`idGame`)
-               ON DELETE NO ACTION
-               ON UPDATE NO ACTION
+CREATE TABLE IF NOT EXISTS `wordleApi`.`Matches` (
+     `idMatch` BIGINT NOT NULL AUTO_INCREMENT,
+     `Word` VARCHAR(45) NULL,
+     `Score` INT NULL,
+     `N_tries` INT NULL,
+     `Date_time` DATETIME NULL,
+     `Player_idPlayer` BIGINT NOT NULL,
+     `Player_Team_idTeam` BIGINT NOT NULL,
+     `Game_idGame` BIGINT NOT NULL,
+     PRIMARY KEY (`idMatch`, `Player_idPlayer`, `Player_Team_idTeam`, `Game_idGame`),
+     INDEX `fk_Match_Player1_idx` (`Player_idPlayer` ASC, `Player_Team_idTeam` ASC) VISIBLE,
+     INDEX `fk_Match_Game1_idx` (`Game_idGame` ASC) VISIBLE,
+     CONSTRAINT `fk_Match_Player1`
+         FOREIGN KEY (`Player_idPlayer` , `Player_Team_idTeam`)
+             REFERENCES `wordleApi`.`Player` (`idPlayer` , `Team_idTeam`)
+             ON DELETE NO ACTION
+             ON UPDATE NO ACTION,
+     CONSTRAINT `fk_Match_Game1`
+         FOREIGN KEY (`Game_idGame`)
+             REFERENCES `wordleApi`.`Game` (`idGame`)
+             ON DELETE NO ACTION
+             ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
 
 
 
 
-INSERT INTO `wordleApi`.`Match` (
+
+INSERT INTO `wordleApi`.`Matches` (
     `Word`,
     `Score`,
     `N_tries`,
@@ -66,3 +67,4 @@ INSERT INTO `wordleApi`.`Match` (
       ('Milk', 90, 3, '2023-01-28 18:25:00', 28, 14, 28),
       ('Game', 80, 5, '2023-01-29 09:40:00', 29, 15, 29),
       ('Ball', 90, 2, '2023-01-30 22:50:00', 30, 15, 30);
+

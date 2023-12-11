@@ -1,8 +1,8 @@
 
 
 CREATE TABLE IF NOT EXISTS `wordleApi`.`Game_has_Word` (
-   `Game_idGame` INT NOT NULL,
-   `Word_idWord` INT NOT NULL,
+   `Game_idGame` BIGINT NOT NULL,
+   `Word_idWord` BIGINT NOT NULL,
    `Difficulty` ENUM('easy', 'normal', 'hard') NOT NULL,
    PRIMARY KEY (`Game_idGame`, `Word_idWord`),
    INDEX `fk_Game_has_Word1_Word1_idx` (`Word_idWord` ASC) VISIBLE,
@@ -18,3 +18,5 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Game_has_Word` (
            ON DELETE NO ACTION
            ON UPDATE NO ACTION)
     ENGINE = InnoDB;
+
+

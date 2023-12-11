@@ -1,6 +1,6 @@
 package com.my.appWordle.models;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Game_has_Word")
@@ -13,11 +13,13 @@ public class GameHasWord {
     private Difficulty difficulty;
 
     @ManyToOne
-    @JoinColumn(name = "Game_idGame", insertable = false, updatable = false)
+    //@MapsId("gameId")
+    //@JoinColumn(name = "Game_idGame")
     private Game game;
 
     @ManyToOne
-    @JoinColumn(name = "Word_idWord", insertable = false, updatable = false)
+    //@MapsId("wordId")
+    //@JoinColumn(name = "Word_idWord")
     private Word word;
 
     // Getters y setters

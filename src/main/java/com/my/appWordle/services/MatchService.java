@@ -1,7 +1,7 @@
 package com.my.appWordle.services;
 
 import com.my.appWordle.error.MatchNotFoundException;
-import com.my.appWordle.models.Match;
+import com.my.appWordle.models.Matches;
 import com.my.appWordle.repositories.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,34 +18,34 @@ public class MatchService {
         this.matchRepository = matchRepository;
     }
 
-    public List<Match> getAllMatches() {
+    public List<Matches> getAllMatches() {
         return matchRepository.findAll();
     }
 
-    public Match getMatchById(Long idMatch) {
+    public Matches getMatchById(Long idMatch) {
         return matchRepository.findById(idMatch)
                 .orElseThrow(() -> new MatchNotFoundException(idMatch));
     }
 
-    public Match createMatch(Match match) {
-        return matchRepository.save(match);
+    public Matches createMatch(Matches matches) {
+        return matchRepository.save(matches);
     }
 
-    public Match updateMatch(Long idMatch, Match updatedMatch) {
-        Match existingMatch = getMatchById(idMatch);
+    public Matches updateMatch(Long idMatch, Matches updatedMatches) {
+        Matches existingMatches = getMatchById(idMatch);
 
-        existingMatch.setWord(updatedMatch.getWord());
-        existingMatch.setScore(updatedMatch.getScore());
-        existingMatch.setnTries(updatedMatch.getnTries());
-        existingMatch.setDateTime(updatedMatch.getDateTime());
+        existingMatches.setWord(updatedMatches.getWord());
+        existingMatches.setScore(updatedMatches.getScore());
+        existingMatches.setnTries(updatedMatches.getnTries());
+        existingMatches.setDateTime(updatedMatches.getDateTime());
 
-        return matchRepository.save(existingMatch);
+        return matchRepository.save(existingMatches);
     }
 
     public void deleteMatch(Long idMatch) {
         // Comprobación de si el partido existe antes de intentar eliminarlo
-        Match existingMatch = getMatchById(idMatch);
+        Matches existingMatches = getMatchById(idMatch);
 
-        matchRepository.delete(existingMatch);
+        matchRepository.delete(existingMatches);
     }
 }

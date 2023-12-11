@@ -1,6 +1,6 @@
 package com.my.appWordle.controllers;
 
-import com.my.appWordle.models.Match;
+import com.my.appWordle.models.Matches;
 import com.my.appWordle.repositories.MatchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,13 +11,13 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/matches")
-public class MatchController {
+public class MatchesController {
     @Autowired
     private MatchRepository matchRepository;
 
     @GetMapping
-    public ResponseEntity<List<Match>> getAllMatches() {
-        List<Match> matches = matchRepository.findAll();
+    public ResponseEntity<List<Matches>> getAllMatches() {
+        List<Matches> matches = matchRepository.findAll();
 
         if (matches.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -27,35 +27,37 @@ public class MatchController {
     }
 
     @GetMapping("/{idMatch}")
-    public ResponseEntity<Match> getMatchById(@PathVariable Long idMatch) {
-        Match match = matchRepository.findById(idMatch).orElse(null);
+    public ResponseEntity<Matches> getMatchById(@PathVariable Long idMatch) {
+        Matches matches = matchRepository.findById(idMatch).orElse(null);
 
-        if (match != null) {
-            return new ResponseEntity<>(match, HttpStatus.OK);
+        if (matches != null) {
+            return new ResponseEntity<>(matches, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
     @PostMapping
-    public ResponseEntity<Match> createMatch(@RequestBody Match match) {
-        Match createdMatch = matchRepository.save(match);
-        return new ResponseEntity<>(createdMatch, HttpStatus.CREATED);
+    public ResponseEntity<Matches> createMatch(@RequestBody Matches matches) {
+        Matches createdMatches = matchRepository.save(matches);
+        return new ResponseEntity<>(createdMatches, HttpStatus.CREATED);
     }
 
     @PutMapping("/{idMatch}")
-    public ResponseEntity<Match> updateMatch(@PathVariable Long idMatch, @RequestBody Match match) {
-        match.setIdMatch(idMatch);
-        Match updatedMatch = matchRepository.save(match);
-        return new ResponseEntity<>(updatedMatch, HttpStatus.OK);
+    public ResponseEntity<Matches> updateMatch(@PathVariable Long idMatch, @RequestBody Matches matches) {
+        matches.setIdMatch(idMatch);
+        Matches updatedMatches = matchRepository.save(matches);
+        return new ResponseEntity<>(updatedMatches, HttpStatus.OK);
     }
 
     @DeleteMapping("/{idMatch}")
     public ResponseEntity<Void> deleteMatch(@PathVariable Long idMatch) {
         if (matchRepository.existsById(idMatch)) {
+            System.out.println("El recurso existe en la base de datos.");
             matchRepository.deleteById(idMatch);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } else {
+            System.out.println("El recurso NO existe en la base de datos.");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }

@@ -1,34 +1,35 @@
 package com.my.appWordle.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
+
 
 @Embeddable
 public class GameHasWordId implements Serializable {
     @Column(name = "Game_idGame")
-    private Long gameIdGame;
+    private Long gameId;
 
     @Column(name = "Word_idWord")
-    private Long wordIdWord;
+    private Long wordId;
 
     // Getters y setters, equals y hashCode
 
 
-    public Long getGameIdGame() {
-        return gameIdGame;
+    public Long getGameId() {
+        return gameId;
     }
 
-    public void setGameIdGame(Long gameIdGame) {
-        this.gameIdGame = gameIdGame;
+    public void setGameId(Long gameId) {
+        this.gameId = gameId;
     }
 
-    public Long getWordIdWord() {
-        return wordIdWord;
+    public Long getWordId() {
+        return wordId;
     }
 
-    public void setWordIdWord(Long wordIdWord) {
-        this.wordIdWord = wordIdWord;
+    public void setWordId(Long wordId) {
+        this.wordId = wordId;
     }
 
     @Override
@@ -36,12 +37,12 @@ public class GameHasWordId implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         GameHasWordId that = (GameHasWordId) o;
-        return Objects.equals(gameIdGame, that.gameIdGame) && Objects.equals(wordIdWord, that.wordIdWord);
+        return Objects.equals(gameId, that.gameId) && Objects.equals(wordId, that.wordId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(gameIdGame, wordIdWord);
+        return Objects.hash(gameId, wordId);
     }
 }
 

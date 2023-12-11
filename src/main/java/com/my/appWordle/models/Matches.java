@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "GameMatch")
-public class Match {
+@Table(name = "Matches")
+public class Matches {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "idMatch")
@@ -24,11 +24,12 @@ public class Match {
     private Date dateTime;
 
     @ManyToOne
-    @JoinColumns({
-            @JoinColumn(name = "Player_idPlayer", referencedColumnName = "idPlayer"),
-            @JoinColumn(name = "Player_Team_idTeam", referencedColumnName = "idTeam")
-    })
+    @JoinColumn(name = "Player_idPlayer", referencedColumnName = "idPlayer")
     private Player player;
+
+    @ManyToOne
+    @JoinColumn(name = "Player_Team_idTeam", referencedColumnName = "idTeam")
+    private Team team;
 
     @ManyToOne
     @JoinColumn(name = "Game_idGame")
@@ -84,6 +85,14 @@ public class Match {
 
     public void setPlayer(Player player) {
         this.player = player;
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
     }
 
     public Game getGame() {
