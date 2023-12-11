@@ -8,58 +8,57 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/games")
 public class GameController {
+
     @Autowired
     private GameRepository gameRepository;
 
     @GetMapping
     public ResponseEntity<List<Game>> getAllGames() {
         List<Game> games = gameRepository.findAll();
-
-        if (games.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } else {
-            return new ResponseEntity<>(games, HttpStatus.OK);
-        }
+        return getResponseEntityForList(games);
     }
 
     @GetMapping("/{idGame}")
     public ResponseEntity<Game> getGameById(@PathVariable Long idGame) {
-        Game game = gameRepository.findById(idGame).orElse(null);
-        if (game != null) {
-            return new ResponseEntity<>(game, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return gameRepository.findById(idGame)
+                .map(game -> ResponseEntity.ok().body(game))
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
         Game createdGame = gameRepository.save(game);
-        return new ResponseEntity<>(createdGame, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdGame);
     }
 
     @PutMapping("/{idGame}")
     public ResponseEntity<Game> updateGame(@PathVariable Long idGame, @RequestBody Game game) {
         game.setIdGame(idGame);
         Game updatedGame = gameRepository.save(game);
-        return new ResponseEntity<>(updatedGame, HttpStatus.OK);
+        return ResponseEntity.ok().body(updatedGame);
     }
 
     @DeleteMapping("/{idGame}")
     public ResponseEntity<Void> deleteGame(@PathVariable Long idGame) {
-        Optional<Game> gameOptional = gameRepository.findById(idGame);
-
-        if (gameOptional.isPresent()) {
-            gameRepository.deleteById(idGame);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+        return gameRepository.findById(idGame)
+                .map(game -> {
+                    gameRepository.deleteById(idGame);
+                    return ResponseEntity.noContent().<Void>build();
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
+    // Método de utilidad para construir ResponseEntity para listas
+    private ResponseEntity<List<Game>> getResponseEntityForList(List<Game> resourceList) {
+        return resourceList.isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(resourceList);
+    }
 }
+
+
+

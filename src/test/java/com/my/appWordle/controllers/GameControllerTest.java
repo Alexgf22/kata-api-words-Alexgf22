@@ -65,7 +65,7 @@ class GameControllerTest {
     @Test
     void getGameById_NotFound() {
         // Arrange
-        Long gameId = 1L;
+        Long gameId = 400L;
         when(gameRepository.findById(gameId)).thenReturn(Optional.empty());
 
         // Act
@@ -134,7 +134,7 @@ class GameControllerTest {
     void deleteGame_NotFound() {
         // Arrange
         // Identificador del juego que no existe
-        Long gameId = 2L;
+        Long gameId = 200L;
         when(gameRepository.findById(gameId)).thenReturn(Optional.empty());
 
         // Act

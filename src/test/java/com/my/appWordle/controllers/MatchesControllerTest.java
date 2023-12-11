@@ -62,7 +62,7 @@ class MatchesControllerTest {
     @Test
     void getMatchById_NotFound() {
         // Arrange
-        Long idMatch = 1L;
+        Long idMatch = 500L;
         Optional<Matches> matchPrueba = matchRepository.findById(idMatch);
         System.out.println(matchPrueba);
         when(matchRepository.findById(idMatch)).thenReturn(Optional.empty());
