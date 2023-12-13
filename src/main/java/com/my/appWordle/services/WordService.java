@@ -43,7 +43,7 @@ public class WordService {
     }
 
 
-    public static List<String> getRandomWords(Long num) {
+    public List<String> getRandomWords(Long num) {
         List<String> randomList = new ArrayList<>();
         if (num > wordList.size()) {
             num = (long) wordList.size();
@@ -57,11 +57,12 @@ public class WordService {
         return randomList;
     }
 
-    public List<String> wordsStartWith(String prefix) throws IOException {
+    public List<String> getWordsStartWith(String prefix) {
         List<String> startingWordsList = new ArrayList<>();
+        String prefixLowerCase = prefix.toLowerCase();
 
         for (String word : wordList) {
-            if (word.startsWith(prefix)) {
+            if (word.toLowerCase().startsWith(prefixLowerCase)) {
                 startingWordsList.add(word);
             }
         }
@@ -69,8 +70,34 @@ public class WordService {
         return startingWordsList;
     }
 
+    public List<String> getWordsEndingWith(String suffix) {
+        List<String> endingWordsList = new ArrayList<>();
+        String suffixLowerCase = suffix.toLowerCase();
 
-    public static List<String> getAllWords() {
+        for (String word : wordList) {
+            if (word.toLowerCase().endsWith(suffixLowerCase)) {
+                endingWordsList.add(word);
+            }
+        }
+
+        return endingWordsList;
+    }
+
+    public List<String> getWordsContaining(String substring) {
+        List<String> containingWordsList = new ArrayList<>();
+        String substringLowerCase = substring.toLowerCase();
+
+        for (String word : wordList) {
+            if (word.toLowerCase().contains(substringLowerCase)) {
+                containingWordsList.add(word);
+            }
+        }
+
+        return containingWordsList;
+    }
+
+
+    public List<String> getAllWords() {
         // Devolver la lista completa de palabras
         return new ArrayList<>(wordList);
     }
@@ -81,8 +108,16 @@ public class WordService {
         WordService wordService = new WordService();
         String randomWord = wordService.getRandomWord();
 
-        System.out.println(getRandomWords(10L));
+        //System.out.println(wordService.getAllWords());
+
+        System.out.println(wordService.getRandomWords(10L));
 
         System.out.println("Palabra aleatoria: " + randomWord);
+
+        System.out.println(wordService.getWordsStartWith("a"));
+
+        System.out.println(wordService.getWordsEndingWith("e"));
+
+        System.out.println(wordService.getWordsContaining("an"));
     }
 }
