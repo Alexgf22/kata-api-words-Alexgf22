@@ -24,15 +24,17 @@ public class WordService {
         wordList = new ArrayList<>();
 
         // Obtener la referencia al archivo 'words.txt' desde el classpath
-        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("words.txt");
-             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
+        try (InputStream inputStream = getClass().getClassLoader().getResourceAsStream("allWords.txt")) {
+            assert inputStream != null;
+            try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
 
-            // Leer cada línea del archivo y añadir la palabra a la lista
-            String line;
-            while ((line = reader.readLine()) != null) {
-                wordList.add(line.trim());
+                // Leer cada línea del archivo y añadir la palabra a la lista
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    wordList.add(line.trim());
+                }
+
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -117,10 +119,10 @@ public class WordService {
 
         System.out.println("Palabra aleatoria: " + randomWord);
 
-        System.out.println(wordService.getWordsStartWith("a"));
+        System.out.println(wordService.getWordsStartWith("acanto"));
 
-        System.out.println(wordService.getWordsEndingWith("e"));
+        System.out.println(wordService.getWordsEndingWith("lito"));
 
-        System.out.println(wordService.getWordsContaining("an"));
+        System.out.println(wordService.getWordsContaining("astr"));
     }
 }
