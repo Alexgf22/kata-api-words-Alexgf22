@@ -2,6 +2,8 @@ package com.my.appWordle.controllers;
 
 import com.my.appWordle.services.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,8 +18,11 @@ public class WordController {
     private WordService wordService;
 
     @GetMapping
-    public ResponseEntity<List<String>> getAllWords() {
-        List<String> words = wordService.getAllWords();
+    public ResponseEntity<Page<String>> getAllWords(
+            @RequestParam(required = false, defaultValue = "0") int page,
+            @RequestParam(required = false, defaultValue = "10") int size) {
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<String> words = wordService.getAllWordsWithPagination(pageRequest);
         return words.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(words);
     }
 

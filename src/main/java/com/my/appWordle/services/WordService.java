@@ -1,5 +1,8 @@
 package com.my.appWordle.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -38,6 +41,19 @@ public class WordService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public List<String> getAllWords() {
+        // Devolver la lista completa de palabras
+        return new ArrayList<>(wordList);
+    }
+
+    public Page<String> getAllWordsWithPagination(PageRequest pageRequest) {
+        // Lógica para obtener las palabras paginadas manualmente
+        int start = (int) pageRequest.getOffset();
+        int end = Math.min((start + pageRequest.getPageSize()), wordList.size());
+
+        return new PageImpl<>(wordList.subList(start, end), pageRequest, wordList.size());
     }
 
     public String getRandomWord() {
@@ -99,12 +115,6 @@ public class WordService {
         }
 
         return containingWordsList;
-    }
-
-
-    public List<String> getAllWords() {
-        // Devolver la lista completa de palabras
-        return new ArrayList<>(wordList);
     }
 
 

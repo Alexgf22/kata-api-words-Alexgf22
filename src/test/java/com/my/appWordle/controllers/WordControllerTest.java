@@ -6,6 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -27,21 +30,25 @@ class WordControllerTest {
     private WordController wordController;
 
     @Test
-    void getAllWords() {
+    void getAllWordsWithPagination() {
         // Arrange
         String word1 = "Word1";
         String word2 = "Word2";
-
         List<String> words = Arrays.asList(word1, word2);
-        when(wordService.getAllWords()).thenReturn(words);
+
+        // Configura el servicio para devolver una página en lugar de una lista
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<String> pagedWords = new PageImpl<>(words, pageRequest, words.size());
+        when(wordService.getAllWordsWithPagination(pageRequest)).thenReturn(pagedWords);
 
         // Act
-        ResponseEntity<List<String>> responseEntity = wordController.getAllWords();
+        ResponseEntity<Page<String>> responseEntity = wordController.getAllWords(0, 10);
 
         // Assert
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(words, responseEntity.getBody());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).getContent().containsAll(words));
     }
+
 
     @Test
     void getWordsStartWith() {
