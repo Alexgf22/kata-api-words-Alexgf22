@@ -4,6 +4,8 @@ import com.my.appWordle.error.GameNotFoundException;
 import com.my.appWordle.models.Game;
 import com.my.appWordle.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +20,18 @@ public class GameController {
     private GameService gameService;
 
     @GetMapping
-    public ResponseEntity<List<Game>> getAllGames() {
-        List<Game> games = gameService.getAllGames();
-        return getResponseEntityForList(games);
+    public ResponseEntity<?> getAllGames(@RequestParam(required = false, defaultValue = "0") int page,
+                                         @RequestParam(required = false, defaultValue = "10") int size) {
+        if (page > 0 || size > 0) {
+            // Si se proporcionan parámetros de paginación, obtener juegos paginados
+            PageRequest pageRequest = PageRequest.of(page, size);
+            Page<Game> games = gameService.getAllGamesWithPagination(pageRequest);
+            return ResponseEntity.ok(games);
+        } else {
+            // Si no se proporcionan parámetros, obtener todos los juegos
+            List<Game> games = gameService.getAllGames();
+            return getResponseEntityForList(games);
+        }
     }
 
     @GetMapping("/{idGame}")

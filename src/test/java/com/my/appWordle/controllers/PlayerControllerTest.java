@@ -8,6 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -15,7 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,20 +31,42 @@ class PlayerControllerTest {
     private PlayerController playerController;
 
     @Test
-    void getAllPlayers() {
+    void getAllPlayersWithPagination() {
         // Arrange
         Player player1 = createTestPlayer("User1", 100, null, createTestTeam("TeamName 1", 90, new byte[]{/*imagen en bytes*/}));
         Player player2 = createTestPlayer("User2", 90, null, createTestTeam("TeamName 2", 80, new byte[]{/*imagen en bytes*/}));
         List<Player> players = Arrays.asList(player1, player2);
-        when(playerService.getAllPlayers()).thenReturn(players);
+
+        // Configura el servicio para devolver una página en lugar de una lista
+        PageRequest pageRequest = PageRequest.of(0, 10);
+        Page<Player> pagedPlayers = new PageImpl<>(players, pageRequest, players.size());
+        when(playerService.getAllPlayersWithPagination(pageRequest)).thenReturn(pagedPlayers);
 
         // Act
-        ResponseEntity<List<Player>> responseEntity = playerController.getAllPlayers();
+        ResponseEntity<Page<Player>> responseEntity = (ResponseEntity<Page<Player>>) playerController.getAllPlayers(0, 10);
 
         // Assert
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(players, responseEntity.getBody());
+
+        // Verifica si el cuerpo de la respuesta es una página de jugadores
+        Page<Player> responseBody = responseEntity.getBody();
+        assertNotNull(responseBody);
+
+        // Verifica explícitamente que la lista de contenidos no esté vacía
+        assertFalse(responseBody.isEmpty(), "La lista de jugadores no debería estar vacía");
+
+        // Verifica que la lista de contenidos sea igual a la lista esperada
+        assertEquals(players, responseBody.getContent());
+
+        // Verifica otras propiedades de la página según sea necesario
+        assertEquals(0, responseBody.getNumber());
+        assertEquals(10, responseBody.getSize());
+        assertEquals(players.size(), responseBody.getTotalElements());
     }
+
+
+
+
 
     @Test
     void getPlayerById() {

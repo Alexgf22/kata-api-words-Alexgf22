@@ -4,6 +4,8 @@ import com.my.appWordle.error.PlayerNotFoundException;
 import com.my.appWordle.models.Player;
 import com.my.appWordle.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +23,10 @@ public class PlayerService {
 
     public List<Player> getAllPlayers() {
         return playerRepository.findAll();
+    }
+
+    public Page<Player> getAllPlayersWithPagination(PageRequest pageRequest) {
+        return playerRepository.findAll(pageRequest);
     }
 
     public Optional<Player> getPlayerById(Long idPlayer) {

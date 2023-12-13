@@ -4,6 +4,8 @@ import com.my.appWordle.error.TeamNotFoundException;
 import com.my.appWordle.models.Team;
 import com.my.appWordle.repositories.TeamRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +22,10 @@ public class TeamService {
 
     public List<Team> getAllTeams() {
         return teamRepository.findAll();
+    }
+
+    public Page<Team> getAllTeamsWithPagination(PageRequest pageRequest) {
+        return teamRepository.findAll(pageRequest);
     }
 
     public Team getTeamById(Long idTeam) {

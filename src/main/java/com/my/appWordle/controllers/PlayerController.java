@@ -4,6 +4,8 @@ import com.my.appWordle.models.Player;
 import com.my.appWordle.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,20 @@ public class PlayerController {
     private PlayerService playerService;
 
     @GetMapping
-    public ResponseEntity<List<Player>> getAllPlayers() {
-        List<Player> players = playerService.getAllPlayers();
-        return players.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(players);
+    public ResponseEntity<?> getAllPlayers(@RequestParam(required = false, defaultValue = "0") int page,
+                                           @RequestParam(required = false, defaultValue = "10") int size) {
+        if (page > 0 || size > 0) {
+            // Si se proporcionan parámetros de paginación, obtener jugadores paginados
+            PageRequest pageRequest = PageRequest.of(page, size);
+            Page<Player> players = playerService.getAllPlayersWithPagination(pageRequest);
+            return ResponseEntity.ok(players);
+        } else {
+            // Si no se proporcionan parámetros, obtener todos los jugadores
+            List<Player> players = playerService.getAllPlayers();
+            return players.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(players);
+        }
     }
+
 
     @GetMapping("/{idPlayer}")
     public ResponseEntity<Player> getPlayerById(@PathVariable Long idPlayer) {

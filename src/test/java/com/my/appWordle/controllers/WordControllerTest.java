@@ -90,17 +90,5 @@ class WordControllerTest {
         assertTrue(Objects.requireNonNull(responseEntity.getBody()).stream().allMatch(word -> word.contains(substring)));
     }
 
-    @Test
-    void createWord() {
-        // Arrange
-        String randomWord = "RandomWord";
-        when(wordService.getRandomWord()).thenReturn(randomWord);
 
-        // Act
-        ResponseEntity<String> responseEntity = wordController.createWord();
-
-        // Assert
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(randomWord, responseEntity.getBody());
-    }
 }

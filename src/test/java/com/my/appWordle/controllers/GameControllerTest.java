@@ -8,6 +8,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,22 +31,37 @@ class GameControllerTest {
     @InjectMocks
     private GameController gameController;
 
-    @Test
-    void getAllGames() {
-        // Arrange
-        Game gameTest1 = createTestGame(5, "An example of a description 1", Difficulty.NORMAL);
-        Game gameTest2 = createTestGame(3, "An example of a description 2", Difficulty.HARD);
 
-        List<Game> games = Arrays.asList(gameTest1, gameTest2);
-        when(gameService.getAllGames()).thenReturn(games);
+    @Test
+    void getAllGamesWithPagination() {
+        // Arrange
+        int page = 0;
+        int size = 10;
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        List<Game> games = Arrays.asList(
+                createTestGame(5, "An example of a description 1", Difficulty.NORMAL),
+                createTestGame(3, "An example of a description 2", Difficulty.HARD)
+        );
+
+        Page<Game> pagedGames = new PageImpl<>(games, pageRequest, games.size());
+
+        when(gameService.getAllGamesWithPagination(pageRequest)).thenReturn(pagedGames);
 
         // Act
-        ResponseEntity<List<Game>> responseEntity = gameController.getAllGames();
+        ResponseEntity<?> responseEntity = gameController.getAllGames(page, size);
 
         // Assert
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(games, responseEntity.getBody());
+        assertTrue(responseEntity.getBody() instanceof Page);
+
+        Page<Game> responsePage = (Page<Game>) responseEntity.getBody();
+        assertEquals(games.size(), responsePage.getContent().size());
+        assertEquals(games, responsePage.getContent());
+        assertEquals(page, responsePage.getNumber());
+        assertEquals(size, responsePage.getSize());
     }
+
 
     @Test
     void getGameById() {

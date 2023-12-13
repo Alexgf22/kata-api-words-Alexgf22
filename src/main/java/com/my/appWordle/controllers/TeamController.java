@@ -3,6 +3,8 @@ package com.my.appWordle.controllers;
 import com.my.appWordle.models.Team;
 import com.my.appWordle.services.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,10 +18,20 @@ public class TeamController {
     private TeamService teamService;
 
     @GetMapping
-    public ResponseEntity<List<Team>> getAllTeams() {
-        List<Team> teams = teamService.getAllTeams();
-        return teams.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(teams);
+    public ResponseEntity<?> getAllTeams(@RequestParam(required = false, defaultValue = "0") int page,
+                                         @RequestParam(required = false, defaultValue = "10") int size) {
+        if (page > 0 || size > 0) {
+            // Si se proporcionan parámetros de paginación, obtener equipos paginados
+            PageRequest pageRequest = PageRequest.of(page, size);
+            Page<Team> teams = teamService.getAllTeamsWithPagination(pageRequest);
+            return ResponseEntity.ok(teams);
+        } else {
+            // Si no se proporcionan parámetros, obtener todos los equipos
+            List<Team> teams = teamService.getAllTeams();
+            return getResponseEntityForList(teams);
+        }
     }
+
 
     @GetMapping("/{idTeam}")
     public ResponseEntity<Team> getTeamById(@PathVariable Long idTeam) {
@@ -54,6 +66,12 @@ public class TeamController {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    private ResponseEntity<?> getResponseEntityForList(List<?> resourceList) {
+        return resourceList.isEmpty()
+                ? ResponseEntity.notFound().build()
+                : ResponseEntity.ok(resourceList);
     }
 
 

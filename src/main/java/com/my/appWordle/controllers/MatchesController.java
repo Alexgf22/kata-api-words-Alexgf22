@@ -4,6 +4,8 @@ import com.my.appWordle.models.Matches;
 import com.my.appWordle.services.MatchesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,10 +19,21 @@ public class MatchesController {
     private MatchesService matchesService;
 
     @GetMapping
-    public ResponseEntity<List<Matches>> getAllMatches() {
-        List<Matches> matches = matchesService.getAllMatches();
-        return matches.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(matches);
+    public ResponseEntity<?> getAllMatches(@RequestParam(required = false, defaultValue = "0") int page,
+                                           @RequestParam(required = false, defaultValue = "10") int size) {
+        if (page > 0 || size > 0) {
+            // Si se proporcionan parámetros de paginación, obtener partidas paginadas
+            PageRequest pageRequest = PageRequest.of(page, size);
+            Page<Matches> matchesPage = matchesService.getAllMatchesWithPagination(pageRequest);
+
+            return ResponseEntity.ok(matchesPage);
+        } else {
+            // Si no se proporcionan parámetros, obtener todas las partidas
+            List<Matches> matches = matchesService.getAllMatches();
+            return matches.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(matches);
+        }
     }
+
 
     @GetMapping("/{idMatch}")
     public ResponseEntity<Matches> getMatchById(@PathVariable Long idMatch) {

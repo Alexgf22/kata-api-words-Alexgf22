@@ -7,6 +7,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -16,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -28,21 +32,35 @@ class MatchesControllerTest {
     private MatchesController matchesController;
 
     @Test
-    void getAllMatches() {
+    void getAllMatchesWithPagination() {
         // Arrange
-        Matches matches1 = createTestMatch("Word1", 100, 3, new Date(), createTestPlayer("TestUser 1", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 1", 80, new byte[]{/*imagen en bytes*/})), createTestGame(1L, 5, "An example of a description 1", Difficulty.NORMAL));
-        Matches matches2 = createTestMatch("Word2", 90, 4, new Date(), createTestPlayer("TestUser 2", 90, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 2", 90, new byte[]{/*imagen en bytes*/})), createTestGame(2L, 6, "An example of a description 2", Difficulty.EASY));
+        int page = 0;
+        int size = 10;
+        PageRequest pageRequest = PageRequest.of(page, size);
 
-        List<Matches> matchesList = Arrays.asList(matches1, matches2);
-        when(matchesService.getAllMatches()).thenReturn(matchesList);
+        List<Matches> matchesList = Arrays.asList(
+                createTestMatch("Word1", 100, 3, new Date(), createTestPlayer("TestUser 1", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 1", 80, new byte[]{/*imagen en bytes*/})), createTestGame(1L, 5, "An example of a description 1", Difficulty.NORMAL)),
+                createTestMatch("Word2", 90, 4, new Date(), createTestPlayer("TestUser 2", 90, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 2", 90, new byte[]{/*imagen en bytes*/})), createTestGame(2L, 6, "An example of a description 2", Difficulty.EASY))
+        );
+
+        Page<Matches> pagedMatches = new PageImpl<>(matchesList, pageRequest, matchesList.size());
+
+        when(matchesService.getAllMatchesWithPagination(pageRequest)).thenReturn(pagedMatches);
 
         // Act
-        ResponseEntity<List<Matches>> responseEntity = matchesController.getAllMatches();
+        ResponseEntity<?> responseEntity = matchesController.getAllMatches(page, size);
 
         // Assert
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(matchesList, responseEntity.getBody());
+        assertTrue(responseEntity.getBody() instanceof Page);
+
+        Page<Matches> responsePage = (Page<Matches>) responseEntity.getBody();
+        assertEquals(matchesList.size(), responsePage.getContent().size());
+        assertEquals(matchesList, responsePage.getContent());
+        assertEquals(page, responsePage.getNumber());
+        assertEquals(size, responsePage.getSize());
     }
+
 
     @Test
     void getMatchById() {
