@@ -1,5 +1,7 @@
 package com.my.appWordle.services;
 
+import org.springframework.stereotype.Service;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -8,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+@Service
 public class WordService {
 
     private static List<String> wordList;
