@@ -1,7 +1,7 @@
 package com.my.appWordle.controllers;
 
 import com.my.appWordle.models.Team;
-import com.my.appWordle.repositories.TeamRepository;
+import com.my.appWordle.services.TeamService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,7 +12,6 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
@@ -21,7 +20,7 @@ import static org.mockito.Mockito.*;
 class TeamControllerTest {
 
     @Mock
-    private TeamRepository teamRepository;
+    private TeamService teamService;
 
     @InjectMocks
     private TeamController teamController;
@@ -33,7 +32,7 @@ class TeamControllerTest {
         Team team2 = createTestTeam("Team2", 90, new byte[]{/*imagen en bytes*/});
 
         List<Team> teams = Arrays.asList(team1, team2);
-        when(teamRepository.findAll()).thenReturn(teams);
+        when(teamService.getAllTeams()).thenReturn(teams);
 
         // Act
         ResponseEntity<List<Team>> responseEntity = teamController.getAllTeams();
@@ -48,7 +47,7 @@ class TeamControllerTest {
         // Arrange
         Long idTeam = 1L;
         Team team = createTestTeam("Team1", 100, new byte[]{/*imagen en bytes*/});
-        when(teamRepository.findById(idTeam)).thenReturn(Optional.of(team));
+        when(teamService.getTeamById(idTeam)).thenReturn(team);
 
         // Act
         ResponseEntity<Team> responseEntity = teamController.getTeamById(idTeam);
@@ -62,7 +61,7 @@ class TeamControllerTest {
     void getTeamById_NotFound() {
         // Arrange
         Long idTeam = 500L;
-        when(teamRepository.findById(idTeam)).thenReturn(Optional.empty());
+        when(teamService.getTeamById(idTeam)).thenReturn(null);
 
         // Act
         ResponseEntity<Team> responseEntity = teamController.getTeamById(idTeam);
@@ -75,7 +74,7 @@ class TeamControllerTest {
     void createTeam() {
         // Arrange
         Team testTeam = createTestTeam("Team3", 80, new byte[]{/*imagen en bytes*/});
-        when(teamRepository.save(any(Team.class))).thenReturn(testTeam);
+        when(teamService.createTeam(any(Team.class))).thenReturn(testTeam);
 
         // Act
         ResponseEntity<Team> responseEntity = teamController.createTeam(testTeam);
@@ -92,8 +91,8 @@ class TeamControllerTest {
         Team existingTeam = createTestTeam("Team4", 100, new byte[]{/*imagen en bytes*/});
         Team updatedTeam = createTestTeam("UpdatedTeam", 90, new byte[]{/*imagen en bytes*/});
 
-        lenient().when(teamRepository.findById(idTeam)).thenReturn(Optional.of(existingTeam));
-        lenient().when(teamRepository.save(any(Team.class))).thenReturn(updatedTeam);
+        lenient().when(teamService.getTeamById(idTeam)).thenReturn(existingTeam);
+        when(teamService.updateTeam(eq(idTeam), any(Team.class))).thenReturn(updatedTeam);
 
         // Act
         ResponseEntity<Team> responseEntity = teamController.updateTeam(idTeam, updatedTeam);
@@ -109,29 +108,28 @@ class TeamControllerTest {
         Long idTeam = 2L;
         Team existingTeam = createTestTeam("Team5", 100, new byte[]{/*imagen en bytes*/});
 
-        lenient().when(teamRepository.existsById(idTeam)).thenReturn(true);
-        lenient().when(teamRepository.findById(idTeam)).thenReturn(Optional.of(existingTeam));
+        when(teamService.getTeamById(idTeam)).thenReturn(existingTeam);
 
         // Act
         ResponseEntity<Void> responseEntity = teamController.deleteTeam(idTeam);
 
         // Assert
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-        verify(teamRepository, times(1)).deleteById(idTeam);
+        verify(teamService, times(1)).deleteTeam(idTeam);
     }
 
     @Test
     void deleteTeam_NotFound() {
         // Arrange
         Long idTeam = 400L;
-        lenient().when(teamRepository.findById(idTeam)).thenReturn(Optional.empty());
+        when(teamService.getTeamById(idTeam)).thenReturn(null);
 
         // Act
         ResponseEntity<Void> responseEntity = teamController.deleteTeam(idTeam);
 
         // Assert
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        verify(teamRepository, never()).deleteById(idTeam);
+        verify(teamService, never()).deleteTeam(idTeam);
     }
 
     private Team createTestTeam(String teamName, Integer score, byte[] badge) {

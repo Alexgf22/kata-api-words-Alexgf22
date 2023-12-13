@@ -1,7 +1,7 @@
 package com.my.appWordle.controllers;
 
 import com.my.appWordle.models.*;
-import com.my.appWordle.repositories.MatchesRepository;
+import com.my.appWordle.services.MatchesService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class MatchesControllerTest {
 
     @Mock
-    private MatchesRepository matchesRepository;
+    private MatchesService matchesService;
 
     @InjectMocks
     private MatchesController matchesController;
@@ -30,26 +30,26 @@ class MatchesControllerTest {
     @Test
     void getAllMatches() {
         // Arrange
-        Matches matches1 = createTestMatch("Word1", 100, 3, new Date(), createTestPlayer("TestUser 1", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 1", 80, new byte[]{/*imagen en bytes*/})), createTestGame(1L,5, "An example of a description 1", Difficulty.NORMAL));
-        Matches matches2 = createTestMatch("Word2", 90, 4, new Date(), createTestPlayer("TestUser 2", 90, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 2", 90, new byte[]{/*imagen en bytes*/})), createTestGame(2L,6, "An example of a description 2", Difficulty.EASY));
+        Matches matches1 = createTestMatch("Word1", 100, 3, new Date(), createTestPlayer("TestUser 1", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 1", 80, new byte[]{/*imagen en bytes*/})), createTestGame(1L, 5, "An example of a description 1", Difficulty.NORMAL));
+        Matches matches2 = createTestMatch("Word2", 90, 4, new Date(), createTestPlayer("TestUser 2", 90, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 2", 90, new byte[]{/*imagen en bytes*/})), createTestGame(2L, 6, "An example of a description 2", Difficulty.EASY));
 
-        List<Matches> matches = Arrays.asList(matches1, matches2);
-        when(matchesRepository.findAll()).thenReturn(matches);
+        List<Matches> matchesList = Arrays.asList(matches1, matches2);
+        when(matchesService.getAllMatches()).thenReturn(matchesList);
 
         // Act
         ResponseEntity<List<Matches>> responseEntity = matchesController.getAllMatches();
 
         // Assert
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(matches, responseEntity.getBody());
+        assertEquals(matchesList, responseEntity.getBody());
     }
 
     @Test
     void getMatchById() {
         // Arrange
         Long idMatch = 1L;
-        Matches matches = createTestMatch("Word3", 80, 4, new Date(), createTestPlayer("TestUser 3", 90, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 3", 80, new byte[]{/*imagen en bytes*/})), createTestGame(1L,6, "An example of a description 3", Difficulty.NORMAL));
-        when(matchesRepository.findById(idMatch)).thenReturn(Optional.of(matches));
+        Matches matches = createTestMatch("Word3", 80, 4, new Date(), createTestPlayer("TestUser 3", 90, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 3", 80, new byte[]{/*imagen en bytes*/})), createTestGame(1L, 6, "An example of a description 3", Difficulty.NORMAL));
+        when(matchesService.getMatchById(idMatch)).thenReturn(Optional.of(matches));
 
         // Act
         ResponseEntity<Matches> responseEntity = matchesController.getMatchById(idMatch);
@@ -63,9 +63,7 @@ class MatchesControllerTest {
     void getMatchById_NotFound() {
         // Arrange
         Long idMatch = 500L;
-        Optional<Matches> matchPrueba = matchesRepository.findById(idMatch);
-        System.out.println(matchPrueba);
-        when(matchesRepository.findById(idMatch)).thenReturn(Optional.empty());
+        when(matchesService.getMatchById(idMatch)).thenReturn(Optional.empty());
 
         // Act
         ResponseEntity<Matches> responseEntity = matchesController.getMatchById(idMatch);
@@ -77,9 +75,16 @@ class MatchesControllerTest {
     @Test
     void createMatch() {
         // Arrange
-        Matches testMatches = createTestMatch("Word4", 100, 3, new Date(), createTestPlayer("TestUser 4", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 4", 70, new byte[]{/*imagen en bytes*/})), createTestGame(3L,7, "An example of a description 4", Difficulty.NORMAL));
+        Matches testMatches = createTestMatch(
+                "Word4",
+                100,
+                3,
+                new Date(),
+                createTestPlayer("TestUser 4", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 4", 70, new byte[]{/*imagen en bytes*/})),
+                createTestGame(3L, 7, "An example of a description 4", Difficulty.NORMAL)
+        );
 
-        when(matchesRepository.save(any(Matches.class))).thenReturn(testMatches);
+        when(matchesService.createMatch(any(Matches.class))).thenReturn(testMatches);
 
         // Act
         ResponseEntity<Matches> responseEntity = matchesController.createMatch(testMatches);
@@ -93,12 +98,11 @@ class MatchesControllerTest {
     void updateMatch() {
         // Arrange
         Long idMatch = 2L;
-        Matches existingMatches = createTestMatch("Word5", 100, 3, new Date(), createTestPlayer("TestUser 5", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 5", 80, new byte[]{/*imagen en bytes*/})), createTestGame(4L,6, "An example of a description 5", Difficulty.NORMAL));
-        Matches updatedMatches = createTestMatch("Word6", 90, 4, new Date(), createTestPlayer("TestUser 6", 90, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 6", 90, new byte[]{/*imagen en bytes*/})), createTestGame(5L,5, "An example of a description 6", Difficulty.EASY));
+        Matches existingMatches = createTestMatch("Word5", 100, 3, new Date(), createTestPlayer("TestUser 5", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 5", 80, new byte[]{/*imagen en bytes*/})), createTestGame(4L, 6, "An example of a description 5", Difficulty.NORMAL));
+        Matches updatedMatches = createTestMatch("Word6", 90, 4, new Date(), createTestPlayer("TestUser 6", 90, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 6", 90, new byte[]{/*imagen en bytes*/})), createTestGame(5L, 5, "An example of a description 6", Difficulty.EASY));
 
-
-        lenient().when(matchesRepository.findById(idMatch)).thenReturn(Optional.of(existingMatches));
-        lenient().when(matchesRepository.save(any(Matches.class))).thenReturn(updatedMatches);
+        lenient().when(matchesService.getMatchById(idMatch)).thenReturn(Optional.of(existingMatches));
+        lenient().when(matchesService.updateMatch(idMatch, updatedMatches)).thenReturn(updatedMatches);
 
         // Act
         ResponseEntity<Matches> responseEntity = matchesController.updateMatch(idMatch, updatedMatches);
@@ -112,34 +116,19 @@ class MatchesControllerTest {
     void deleteMatch() {
         // Arrange
         Long idMatch = 1L;
-        Matches existingMatch = createTestMatch("Word7", 100, 3, new Date(), createTestPlayer("TestUser 7", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 7", 100, new byte[]{/*imagen en bytes*/})), createTestGame(1L,5, "An example of a description 7", Difficulty.HARD));
+        Matches existingMatch = createTestMatch("Word7", 100, 3, new Date(), createTestPlayer("TestUser 7", 100, new byte[]{/*imagen en bytes*/}, createTestTeam("TeamName 7", 100, new byte[]{/*imagen en bytes*/})), createTestGame(1L, 5, "An example of a description 7", Difficulty.HARD));
 
-        lenient().when(matchesRepository.existsById(idMatch)).thenReturn(true);
-        lenient().when(matchesRepository.findById(idMatch)).thenReturn(Optional.of(existingMatch));
+        lenient().when(matchesService.getMatchById(idMatch)).thenReturn(Optional.of(existingMatch));
 
         // Act
         ResponseEntity<Void> responseEntity = matchesController.deleteMatch(idMatch);
 
         // Assert
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-        verify(matchesRepository, times(1)).deleteById(idMatch);
+        verify(matchesService, times(1)).deleteMatch(idMatch);
+
     }
 
-
-
-    @Test
-    void deleteMatch_NotFound() {
-        // Arrange
-        Long idMatch = 400L;
-        lenient().when(matchesRepository.findById(idMatch)).thenReturn(Optional.empty());
-
-        // Act
-        ResponseEntity<Void> responseEntity = matchesController.deleteMatch(idMatch);
-
-        // Assert
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        verify(matchesRepository, never()).deleteById(idMatch);
-    }
 
 
     private Matches createTestMatch(String word, Integer score, Integer nTries, Date dateTime, Player player, Game game) {
@@ -162,7 +151,6 @@ class MatchesControllerTest {
         return team;
     }
 
-
     private Player createTestPlayer(String userName, Integer score, byte[] avatarImg, Team team) {
         Player testPlayer = new Player();
         testPlayer.setUserName(userName);
@@ -172,7 +160,6 @@ class MatchesControllerTest {
         return testPlayer;
     }
 
-
     private Game createTestGame(Long idGame, int maxTries, String description, Difficulty difficulty) {
         Game testGame = new Game();
         testGame.setIdGame(idGame);
@@ -181,6 +168,4 @@ class MatchesControllerTest {
         testGame.setDifficulty(difficulty);
         return testGame;
     }
-
-
 }

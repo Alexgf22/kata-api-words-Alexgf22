@@ -1,4 +1,3 @@
-/*
 package com.my.appWordle.controllers;
 
 import com.my.appWordle.services.WordService;
@@ -12,17 +11,17 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class WordControllerTest {
 
     @Mock
-    private WordService wordService;  // Corrected: Change from wordRepository to wordService
+    private WordService wordService;
 
     @InjectMocks
     private WordController wordController;
@@ -34,7 +33,7 @@ class WordControllerTest {
         String word2 = "Word2";
 
         List<String> words = Arrays.asList(word1, word2);
-        when(wordService.getAllWords()).thenReturn(words);  // Corrected: Change from wordRepository to wordService
+        when(wordService.getAllWords()).thenReturn(words);
 
         // Act
         ResponseEntity<List<String>> responseEntity = wordController.getAllWords();
@@ -45,94 +44,63 @@ class WordControllerTest {
     }
 
     @Test
-    void getWordById() {
+    void getWordsStartWith() {
         // Arrange
-        Long idWord = 1L;
-        String word = "Word1";
-        when(wordService.getWordById(idWord)).thenReturn(Optional.of(word));  // Corrected: Change from wordRepository to wordService
+        String prefix = "pre";
+        List<String> startingWords = Arrays.asList("prefix", "preposition");
+        when(wordService.getWordsStartWith(prefix)).thenReturn(startingWords);
 
         // Act
-        ResponseEntity<String> responseEntity = wordController.getWordById(idWord);
+        ResponseEntity<List<String>> responseEntity = wordController.getWordsStartWith(prefix);
 
         // Assert
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(word, responseEntity.getBody());
+
+        // Verifica si todas las palabras cumplen con la condición del prefijo
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).stream().allMatch(word -> word.startsWith(prefix)));
     }
 
     @Test
-    void getWordById_NotFound() {
+    void getWordsEndingWith() {
         // Arrange
-        Long idWord = 500L;
-        when(wordService.getWordById(idWord)).thenReturn(Optional.empty());  // Corrected: Change from wordRepository to wordService
+        String suffix = "tion";
+        List<String> endingWords = Arrays.asList("position", "transition");
+        when(wordService.getWordsEndingWith(suffix)).thenReturn(endingWords);
 
         // Act
-        ResponseEntity<String> responseEntity = wordController.getWordById(idWord);
+        ResponseEntity<List<String>> responseEntity = wordController.getWordsEndingWith(suffix);
 
         // Assert
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).stream().allMatch(word -> word.endsWith(suffix)));
+    }
+
+    @Test
+    void getWordsContaining() {
+        // Arrange
+        String substring = "an";
+        List<String> containingWords = Arrays.asList("banana", "fantastic");
+        when(wordService.getWordsContaining(substring)).thenReturn(containingWords);
+
+        // Act
+        ResponseEntity<List<String>> responseEntity = wordController.getWordsContaining(substring);
+
+        // Assert
+        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
+        assertTrue(Objects.requireNonNull(responseEntity.getBody()).stream().allMatch(word -> word.contains(substring)));
     }
 
     @Test
     void createWord() {
         // Arrange
-        String testWord = "Word3";
-        when(wordService.createWord(any(String.class))).thenReturn(testWord);  // Corrected: Change from wordRepository to wordService
+        String randomWord = "RandomWord";
+        when(wordService.getRandomWord()).thenReturn(randomWord);
 
         // Act
         ResponseEntity<String> responseEntity = wordController.createWord();
 
         // Assert
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(testWord, responseEntity.getBody());
-    }
-
-    @Test
-    void updateWord() {
-        // Arrange
-        Long idWord = 2L;
-        String existingWord = "Word4";
-        String updatedWord = "UpdatedWord";
-
-        lenient().when(wordService.getWordById(idWord)).thenReturn(Optional.of(existingWord));  // Corrected: Change from wordRepository to wordService
-        lenient().when(wordService.updateWord(idWord, updatedWord)).thenReturn(updatedWord);  // Corrected: Change from wordRepository to wordService
-
-        // Act
-        ResponseEntity<String> responseEntity = wordController.updateWord(idWord, updatedWord);
-
-        // Assert
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(updatedWord, responseEntity.getBody());
-    }
-
-    @Test
-    void deleteWord() {
-        // Arrange
-        Long idWord = 2L;
-        String existingWord = "Word5";
-
-        lenient().when(wordService.wordExists(idWord)).thenReturn(true);  // Corrected: Change from wordRepository to wordService
-        lenient().when(wordService.getWordById(idWord)).thenReturn(Optional.of(existingWord));  // Corrected: Change from wordRepository to wordService
-
-        // Act
-        ResponseEntity<Void> responseEntity = wordController.deleteWord(idWord);
-
-        // Assert
-        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-        verify(wordService, times(1)).deleteWord(idWord);  // Corrected: Change from wordRepository to wordService
-    }
-
-    @Test
-    void deleteWord_NotFound() {
-        // Arrange
-        Long idWord = 400L;
-        lenient().when(wordService.getWordById(idWord)).thenReturn(Optional.empty());  // Corrected: Change from wordRepository to wordService
-
-        // Act
-        ResponseEntity<Void> responseEntity = wordController.deleteWord(idWord);
-
-        // Assert
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        verify(wordService, never()).deleteWord(idWord);  // Corrected: Change from wordRepository to wordService
+        assertEquals(randomWord, responseEntity.getBody());
     }
 }
-*/

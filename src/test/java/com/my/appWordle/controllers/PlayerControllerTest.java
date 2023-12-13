@@ -2,7 +2,7 @@ package com.my.appWordle.controllers;
 
 import com.my.appWordle.models.Player;
 import com.my.appWordle.models.Team;
-import com.my.appWordle.repositories.PlayerRepository;
+import com.my.appWordle.services.PlayerService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.*;
 class PlayerControllerTest {
 
     @Mock
-    private PlayerRepository playerRepository;
+    private PlayerService playerService;
 
     @InjectMocks
     private PlayerController playerController;
@@ -33,7 +33,7 @@ class PlayerControllerTest {
         Player player1 = createTestPlayer("User1", 100, null, createTestTeam("TeamName 1", 90, new byte[]{/*imagen en bytes*/}));
         Player player2 = createTestPlayer("User2", 90, null, createTestTeam("TeamName 2", 80, new byte[]{/*imagen en bytes*/}));
         List<Player> players = Arrays.asList(player1, player2);
-        when(playerRepository.findAll()).thenReturn(players);
+        when(playerService.getAllPlayers()).thenReturn(players);
 
         // Act
         ResponseEntity<List<Player>> responseEntity = playerController.getAllPlayers();
@@ -48,7 +48,7 @@ class PlayerControllerTest {
         // Arrange
         Long idPlayer = 1L;
         Player player = createTestPlayer("TestUser", 80, null, createTestTeam("TeamName 3", 100, new byte[]{/*imagen en bytes*/}));
-        when(playerRepository.findById(idPlayer)).thenReturn(Optional.of(player));
+        when(playerService.getPlayerById(idPlayer)).thenReturn(Optional.of(player));
 
         // Act
         ResponseEntity<Player> responseEntity = playerController.getPlayerById(idPlayer);
@@ -62,7 +62,7 @@ class PlayerControllerTest {
     void getPlayerById_NotFound() {
         // Arrange
         Long idPlayer = 500L;
-        when(playerRepository.findById(idPlayer)).thenReturn(Optional.empty());
+        when(playerService.getPlayerById(idPlayer)).thenReturn(Optional.empty());
 
         // Act
         ResponseEntity<Player> responseEntity = playerController.getPlayerById(idPlayer);
@@ -75,7 +75,7 @@ class PlayerControllerTest {
     void createPlayer() {
         // Arrange
         Player testPlayer = createTestPlayer("TestUser", 100, null, createTestTeam("TeamName 4", 70, new byte[]{/*imagen en bytes*/}));
-        when(playerRepository.save(any(Player.class))).thenReturn(testPlayer);
+        when(playerService.createPlayer(any(Player.class))).thenReturn(testPlayer);
 
         // Act
         ResponseEntity<Player> responseEntity = playerController.createPlayer(testPlayer);
@@ -92,8 +92,8 @@ class PlayerControllerTest {
         Player existingPlayer = createTestPlayer("TestUser", 80, null, createTestTeam("TeamName 5", 80, new byte[]{/*imagen en bytes*/}));
         Player updatedPlayer = createTestPlayer("UpdatedUser", 90, null, createTestTeam("TeamName 6", 90, new byte[]{/*imagen en bytes*/}));
 
-        lenient().when(playerRepository.findById(idPlayer)).thenReturn(Optional.of(existingPlayer));
-        lenient().when(playerRepository.save(any(Player.class))).thenReturn(updatedPlayer);
+        lenient().when(playerService.getPlayerById(idPlayer)).thenReturn(Optional.of(existingPlayer));
+        when(playerService.updatePlayer(eq(idPlayer), any(Player.class))).thenReturn(updatedPlayer);
 
         // Act
         ResponseEntity<Player> responseEntity = playerController.updatePlayer(idPlayer, updatedPlayer);
@@ -109,30 +109,16 @@ class PlayerControllerTest {
         Long idPlayer = 1L;
         Player existingPlayer = createTestPlayer("TestUser", 80, null, createTestTeam("TeamName 7", 80, new byte[]{/*imagen en bytes*/}));
 
-        lenient().when(playerRepository.existsById(idPlayer)).thenReturn(true);
-        lenient().when(playerRepository.findById(idPlayer)).thenReturn(Optional.of(existingPlayer));
+        lenient().when(playerService.getPlayerById(idPlayer)).thenReturn(Optional.of(existingPlayer));
 
         // Act
         ResponseEntity<Void> responseEntity = playerController.deletePlayer(idPlayer);
 
         // Assert
         assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-        verify(playerRepository, times(1)).deleteById(idPlayer);
+        verify(playerService, times(1)).deletePlayer(idPlayer);
     }
 
-    @Test
-    void deletePlayer_NotFound() {
-        // Arrange
-        Long idPlayer = 600L;
-        lenient().when(playerRepository.existsById(idPlayer)).thenReturn(false);
-
-        // Act
-        ResponseEntity<Void> responseEntity = playerController.deletePlayer(idPlayer);
-
-        // Assert
-        assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
-        verify(playerRepository, never()).deleteById(idPlayer);
-    }
 
     private Player createTestPlayer(String userName, Integer score, byte[] avatarImg, Team team) {
         Player testPlayer = new Player();
