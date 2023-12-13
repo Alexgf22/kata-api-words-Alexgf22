@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class PlayerService {
@@ -22,9 +23,8 @@ public class PlayerService {
         return playerRepository.findAll();
     }
 
-    public Player getPlayerById(Long idPlayer) {
-        return playerRepository.findById(idPlayer)
-                .orElseThrow(() -> new PlayerNotFoundException(idPlayer));
+    public Optional<Player> getPlayerById(Long idPlayer) {
+        return playerRepository.findById(idPlayer);
     }
 
     public Player createPlayer(Player player) {
@@ -32,7 +32,8 @@ public class PlayerService {
     }
 
     public Player updatePlayer(Long idPlayer, Player updatedPlayer) {
-        Player existingPlayer = getPlayerById(idPlayer);
+        Player existingPlayer = getPlayerById(idPlayer)
+                .orElseThrow(() -> new PlayerNotFoundException(idPlayer));
 
         existingPlayer.setUserName(updatedPlayer.getUserName());
         existingPlayer.setScore(updatedPlayer.getScore());
@@ -43,7 +44,8 @@ public class PlayerService {
 
     public void deletePlayer(Long idPlayer) {
         // Comprobación de si el jugador existe antes de intentar eliminarlo
-        Player existingPlayer = getPlayerById(idPlayer);
+        Player existingPlayer = getPlayerById(idPlayer)
+                .orElseThrow(() -> new PlayerNotFoundException(idPlayer));
 
         playerRepository.delete(existingPlayer);
     }

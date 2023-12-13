@@ -1,7 +1,8 @@
 package com.my.appWordle.controllers;
 
+import com.my.appWordle.error.GameNotFoundException;
 import com.my.appWordle.models.Game;
-import com.my.appWordle.repositories.GameRepository;
+import com.my.appWordle.services.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,48 +15,54 @@ import java.util.List;
 public class GameController {
 
     @Autowired
-    private GameRepository gameRepository;
+    private GameService gameService;
 
     @GetMapping
     public ResponseEntity<List<Game>> getAllGames() {
-        List<Game> games = gameRepository.findAll();
+        List<Game> games = gameService.getAllGames();
         return getResponseEntityForList(games);
     }
 
     @GetMapping("/{idGame}")
     public ResponseEntity<Game> getGameById(@PathVariable Long idGame) {
-        return gameRepository.findById(idGame)
+        return gameService.getGameById(idGame)
                 .map(game -> ResponseEntity.ok().body(game))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<Game> createGame(@RequestBody Game game) {
-        Game createdGame = gameRepository.save(game);
+        Game createdGame = gameService.createGame(game);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdGame);
     }
 
     @PutMapping("/{idGame}")
     public ResponseEntity<Game> updateGame(@PathVariable Long idGame, @RequestBody Game game) {
         if (idGame == null || game == null) {
-            return ResponseEntity.badRequest().build();  // Bad request si idGame o game son nulos
+            return ResponseEntity.badRequest().build();  // Bad request si idGame o game es nulo
         }
 
         game.setIdGame(idGame);
-        Game updatedGame = gameRepository.save(game);
-        return ResponseEntity.ok().body(updatedGame);
-    }
+        Game updatedGame = gameService.updateGame(idGame, game);
 
+        // Comprueba si el juego fue encontrado y actualizado
+        if (updatedGame != null) {
+            return ResponseEntity.ok(updatedGame);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
     @DeleteMapping("/{idGame}")
     public ResponseEntity<Void> deleteGame(@PathVariable Long idGame) {
-        return gameRepository.findById(idGame)
-                .map(game -> {
-                    gameRepository.deleteById(idGame);
-                    return ResponseEntity.noContent().<Void>build();
-                })
-                .orElseGet(() -> ResponseEntity.notFound().build());
+        try {
+            gameService.deleteGame(idGame);
+            return ResponseEntity.noContent().build();
+        } catch (GameNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
+
 
     // Método de utilidad para construir ResponseEntity para listas
     private ResponseEntity<List<Game>> getResponseEntityForList(List<Game> resourceList) {

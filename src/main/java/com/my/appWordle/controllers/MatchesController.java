@@ -1,7 +1,7 @@
 package com.my.appWordle.controllers;
 
 import com.my.appWordle.models.Matches;
-import com.my.appWordle.repositories.MatchRepository;
+import com.my.appWordle.services.MatchesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
@@ -14,38 +14,38 @@ import java.util.List;
 @RequestMapping("/api/matches")
 public class MatchesController {
     @Autowired
-    private MatchRepository matchRepository;
+    private MatchesService matchesService;
 
     @GetMapping
     public ResponseEntity<List<Matches>> getAllMatches() {
-        List<Matches> matches = matchRepository.findAll();
+        List<Matches> matches = matchesService.getAllMatches();
         return matches.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(matches);
     }
 
     @GetMapping("/{idMatch}")
     public ResponseEntity<Matches> getMatchById(@PathVariable Long idMatch) {
-        return matchRepository.findById(idMatch)
+        return matchesService.getMatchById(idMatch)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
     public ResponseEntity<Matches> createMatch(@RequestBody Matches matches) {
-        Matches createdMatches = matchRepository.save(matches);
+        Matches createdMatches = matchesService.createMatch(matches);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdMatches);
     }
 
     @PutMapping("/{idMatch}")
     public ResponseEntity<Matches> updateMatch(@PathVariable Long idMatch, @RequestBody Matches matches) {
         matches.setIdMatch(idMatch);
-        Matches updatedMatches = matchRepository.save(matches);
+        Matches updatedMatches = matchesService.updateMatch(idMatch, matches);
         return ResponseEntity.ok(updatedMatches);
     }
 
     @DeleteMapping("/{idMatch}")
     public ResponseEntity<Void> deleteMatch(@PathVariable Long idMatch) {
         try {
-            matchRepository.deleteById(idMatch);
+            matchesService.deleteMatch(idMatch);
             return ResponseEntity.noContent().build();
         } catch (EmptyResultDataAccessException e) {
             return ResponseEntity.notFound().build();
