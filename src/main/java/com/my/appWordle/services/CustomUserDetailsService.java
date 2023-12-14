@@ -1,6 +1,6 @@
 package com.my.appWordle.services;
 
-/*
+
 import com.my.appWordle.models.AppUser;
 import com.my.appWordle.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +29,4 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
     }
 }
-*/
+

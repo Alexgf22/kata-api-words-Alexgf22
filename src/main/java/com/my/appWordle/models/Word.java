@@ -1,6 +1,6 @@
 package com.my.appWordle.models;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "Word")
