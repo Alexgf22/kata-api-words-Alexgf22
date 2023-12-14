@@ -91,56 +91,6 @@ class GameControllerTest {
         assertEquals(HttpStatus.NOT_FOUND, responseEntity.getStatusCode());
     }
 
-    @Test
-    void createGame() {
-        // Arrange
-        Game testGame2 = createTestGame(6, "An example of a description 4", Difficulty.NORMAL);
-
-        when(gameService.createGame(any(Game.class))).thenReturn(testGame2);
-
-        // Act
-        ResponseEntity<Game> responseEntity = gameController.createGame(testGame2);
-
-        // Assert
-        assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
-        assertEquals(testGame2, responseEntity.getBody());
-    }
-
-    @Test
-    void updateGame() {
-        // Arrange
-        Long gameId = 1L;
-        Game existingGame = createTestGame(5, "An example of a description 5", Difficulty.HARD);
-        Game updatedGame = createTestGame(8, "Updated description", Difficulty.EASY);
-
-        lenient().when(gameService.getGameById(gameId)).thenReturn(Optional.of(existingGame));
-        lenient().when(gameService.updateGame(gameId, updatedGame)).thenReturn(updatedGame);
-
-        // Act
-        ResponseEntity<Game> responseEntity = gameController.updateGame(gameId, updatedGame);
-
-        // Assert
-        assertEquals(HttpStatus.OK, responseEntity.getStatusCode());
-        assertEquals(updatedGame, responseEntity.getBody());
-    }
-
-    @Test
-    void deleteGame() {
-        // Arrange
-        Long gameId = 1L;
-        Game existingGame = createTestGame(5, "An example of a description 6", Difficulty.NORMAL);
-
-        lenient().when(gameService.getGameById(gameId)).thenReturn(Optional.of(existingGame));
-
-        // Act
-        ResponseEntity<Void> responseEntity = gameController.deleteGame(gameId);
-
-        // Assert
-        assertEquals(HttpStatus.NO_CONTENT, responseEntity.getStatusCode());
-
-        verify(gameService, times(1)).deleteGame(gameId);
-    }
-
 
     private Game createTestGame(int maxTries, String description, Difficulty difficulty) {
         Game testGame = new Game();

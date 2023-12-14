@@ -3,7 +3,7 @@
 CREATE TABLE IF NOT EXISTS `wordleApi`.`Game_has_Word` (
    `Game_idGame` BIGINT NOT NULL,
    `Word_idWord` BIGINT NOT NULL,
-   `Difficulty` ENUM('easy', 'normal', 'hard') NOT NULL,
+   `Difficulty` ENUM('EASY', 'NORMAL', 'HARD') NOT NULL,
    PRIMARY KEY (`Game_idGame`, `Word_idWord`),
    INDEX `fk_Game_has_Word1_Word1_idx` (`Word_idWord` ASC) VISIBLE,
    INDEX `fk_Game_has_Word1_Game1_idx` (`Game_idGame` ASC) VISIBLE,

@@ -118,21 +118,4 @@ public class WordService {
     }
 
 
-    public static void main(String[] args) {
-        // Prueba de uso del servicio
-        WordService wordService = new WordService();
-        String randomWord = wordService.getRandomWord();
-
-        //System.out.println(wordService.getAllWords());
-
-        System.out.println(wordService.getRandomWords(10L));
-
-        System.out.println("Palabra aleatoria: " + randomWord);
-
-        System.out.println(wordService.getWordsStartingWith("acanto"));
-
-        System.out.println(wordService.getWordsEndingWith("cardio"));
-
-        System.out.println(wordService.getWordsContaining("astr"));
-    }
 }

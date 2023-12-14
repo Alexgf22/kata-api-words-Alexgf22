@@ -2,7 +2,7 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Game` (
   `idGame` BIGINT  NOT NULL AUTO_INCREMENT,
   `Max_tries` INT NULL,
   `Description` VARCHAR(80) NULL,
-  `Difficulty` ENUM('easy', 'normal', 'hard') NOT NULL,
+  `Difficulty` ENUM('EASY', 'NORMAL', 'HARD') NOT NULL,
   PRIMARY KEY (`idGame`)
     ) ENGINE = InnoDB;
 

@@ -25,6 +25,12 @@ public class WordController {
         return words.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(words);
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<List<String>> getAllWords() {
+        List<String> words = wordService.getAllWords();
+        return words.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(words);
+    }
+
     @GetMapping("/starting/{prefix}")
     public ResponseEntity<List<String>> getWordsStartingWith(@PathVariable String prefix) {
         List<String> startingWords = wordService.getWordsStartingWith(prefix);
@@ -41,6 +47,18 @@ public class WordController {
     public ResponseEntity<List<String>> getWordsContaining(@PathVariable String substring) {
         List<String> containingWords = wordService.getWordsContaining(substring);
         return containingWords.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(containingWords);
+    }
+
+    @GetMapping("/random")
+    public ResponseEntity<String> getRandomWord() {
+        String randomWord = wordService.getRandomWord();
+        return ResponseEntity.ok(randomWord);
+    }
+
+    @GetMapping("/random/{num}")
+    public ResponseEntity<List<String>> getRandomWords(@PathVariable Long num) {
+        List<String> randomWords = wordService.getRandomWords(num);
+        return ResponseEntity.ok(randomWords);
     }
 
 

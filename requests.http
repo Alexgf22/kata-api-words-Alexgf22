@@ -2,28 +2,19 @@
 
 // Peticiones Game
 
-### Obtener todos los juegos
+### Obtener todos los juegos, no funciona
 GET http://localhost:8080/api/games
 
-### Obtener el juego con id 6
+### Obtener el juego con id 6, no funciona
 GET http://localhost:8080/api/games/6
-
-### Crear un nuevo juego
-POST http://localhost:8080/api/games
-
-### Actualizar el juego con id 4
-PUT http://localhost:8080/api/games/4
-
-### Eliminar el juego con id 8
-DELETE http://localhost:8080/api/games/8
 
 
 // Peticiones Matches
 
-###
+### No funciona
 GET http://localhost:8080/api/matches
 
-###
+### No funciona
 GET http://localhost:8080/api/matches/4
 
 ###
@@ -32,7 +23,7 @@ POST http://localhost:8080/api/matches
 ###
 PUT http://localhost:8080/api/matches/5
 
-###
+### No funciona
 DELETE http://localhost:8080/api/matches/6
 
 
@@ -50,7 +41,7 @@ POST http://localhost:8080/api/players
 ###
 PUT http://localhost:8080/api/players/8
 
-###
+### No funciona
 DELETE http://localhost:8080/api/players/3
 
 
@@ -68,20 +59,29 @@ POST http://localhost:8080/api/teams
 ###
 PUT http://localhost:8080/api/teams/6
 
-###
-DELETE http://localhost:8080/api/teams/8
+### No funciona
+DELETE http://localhost:8080/api/teams/6
 
 
 // Peticiones Word
 
-###
-GET http://localhost:8080/api/words
+### Obtener un número de palabras por defecto 10
+GET http://localhost:8080/api/words?page=1&size=20
 
-### Palabras que empiezan por a-
-GET http://localhost:8080/api/words/starting/a
+### Obtener toda la lista de palabras
+GET http://localhost:8080/api/words/all
+
+### Palabras que empiezan por antropo-
+GET http://localhost:8080/api/words/starting/antropo
 
 ### Palabras que terminan en -ferro
 GET http://localhost:8080/api/words/ending/ferro
 
 ### Palabras que contienen astr
 GET http://localhost:8080/api/words/containing/astr
+
+### Obtener una palabra aleatoria
+GET http://localhost:8080/api/words/random
+
+### Obtener un número específico de palabras aleatorias
+GET http://localhost:8080/api/words/random/12
