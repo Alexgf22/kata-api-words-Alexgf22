@@ -4,7 +4,6 @@ import com.my.appWordle.services.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +25,9 @@ public class WordController {
         return words.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(words);
     }
 
-    @GetMapping("/{prefix}")
-    public ResponseEntity<List<String>> getWordsStartWith(@PathVariable String prefix) {
-        List<String> startingWords = wordService.getWordsStartWith(prefix);
+    @GetMapping("/starting/{prefix}")
+    public ResponseEntity<List<String>> getWordsStartingWith(@PathVariable String prefix) {
+        List<String> startingWords = wordService.getWordsStartingWith(prefix);
         return startingWords.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(startingWords);
     }
 
@@ -44,9 +43,5 @@ public class WordController {
         return containingWords.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(containingWords);
     }
 
-    @PostMapping
-    public ResponseEntity<String> createWord() {
-        String randomWord = wordService.getRandomWord();
-        return ResponseEntity.status(HttpStatus.CREATED).body(randomWord);
-    }
+
 }

@@ -55,10 +55,10 @@ class WordControllerTest {
         // Arrange
         String prefix = "pre";
         List<String> startingWords = Arrays.asList("prefix", "preposition");
-        when(wordService.getWordsStartWith(prefix)).thenReturn(startingWords);
+        when(wordService.getWordsStartingWith(prefix)).thenReturn(startingWords);
 
         // Act
-        ResponseEntity<List<String>> responseEntity = wordController.getWordsStartWith(prefix);
+        ResponseEntity<List<String>> responseEntity = wordController.getWordsStartingWith(prefix);
 
         // Assert
         assertEquals(HttpStatus.OK, responseEntity.getStatusCode());

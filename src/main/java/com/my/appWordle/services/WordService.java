@@ -78,7 +78,7 @@ public class WordService {
         return randomList;
     }
 
-    public List<String> getWordsStartWith(String prefix) {
+    public List<String> getWordsStartingWith(String prefix) {
         List<String> startingWordsList = new ArrayList<>();
         String prefixLowerCase = prefix.toLowerCase();
 
@@ -129,9 +129,9 @@ public class WordService {
 
         System.out.println("Palabra aleatoria: " + randomWord);
 
-        System.out.println(wordService.getWordsStartWith("acanto"));
+        System.out.println(wordService.getWordsStartingWith("acanto"));
 
-        System.out.println(wordService.getWordsEndingWith("lito"));
+        System.out.println(wordService.getWordsEndingWith("cardio"));
 
         System.out.println(wordService.getWordsContaining("astr"));
     }

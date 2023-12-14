@@ -1,4 +1,87 @@
+// Meter el cuerpo json en post y put
 
+// Peticiones Game
+
+### Obtener todos los juegos
+GET http://localhost:8080/api/games
+
+### Obtener el juego con id 6
+GET http://localhost:8080/api/games/6
+
+### Crear un nuevo juego
+POST http://localhost:8080/api/games
+
+### Actualizar el juego con id 4
+PUT http://localhost:8080/api/games/4
+
+### Eliminar el juego con id 8
+DELETE http://localhost:8080/api/games/8
+
+
+// Peticiones Matches
+
+###
+GET http://localhost:8080/api/matches
+
+###
+GET http://localhost:8080/api/matches/4
+
+###
+POST http://localhost:8080/api/matches
+
+###
+PUT http://localhost:8080/api/matches/5
+
+###
+DELETE http://localhost:8080/api/matches/6
+
+
+// Peticiones Player
+
+###
+GET http://localhost:8080/api/players
+
+###
+GET http://localhost:8080/api/players/4
+
+###
+POST http://localhost:8080/api/players
+
+###
+PUT http://localhost:8080/api/players/8
+
+###
+DELETE http://localhost:8080/api/players/3
+
+
+// Peticiones Team
 
 ###
 GET http://localhost:8080/api/teams
+
+###
+GET http://localhost:8080/api/teams/4
+
+###
+POST http://localhost:8080/api/teams
+
+###
+PUT http://localhost:8080/api/teams/6
+
+###
+DELETE http://localhost:8080/api/teams/8
+
+
+// Peticiones Word
+
+###
+GET http://localhost:8080/api/words
+
+### Palabras que empiezan por a-
+GET http://localhost:8080/api/words/starting/a
+
+### Palabras que terminan en -ferro
+GET http://localhost:8080/api/words/ending/ferro
+
+### Palabras que contienen astr
+GET http://localhost:8080/api/words/containing/astr
