@@ -32,6 +32,14 @@ public class TeamController {
         }
     }
 
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllTeamsList() {
+        // Se obtiene la lista de todos los equipos
+        List<Team> teams = teamService.getAllTeams();
+        return getResponseEntityForList(teams);
+    }
+
+
 
     @GetMapping("/{idTeam}")
     public ResponseEntity<Team> getTeamById(@PathVariable Long idTeam) {

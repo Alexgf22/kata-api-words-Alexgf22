@@ -56,8 +56,11 @@ DELETE http://localhost:8080/api/players/3
 
 // Peticiones Team
 
-### Se obtiene la lista de todos los equipos
+### Se obtiene por defecto los 10 primeros equipos de la lista
 GET http://localhost:8080/api/teams
+
+### Se obtiene la lista de todos los equipos
+GET http://localhost:8080/api/teams/all
 
 ### Se obtiene el equipo con id 4
 GET http://localhost:8080/api/teams/4
