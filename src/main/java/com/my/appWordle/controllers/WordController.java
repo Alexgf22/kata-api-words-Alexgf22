@@ -1,12 +1,15 @@
 package com.my.appWordle.controllers;
 
+import com.my.appWordle.error.WordNotFoundException;
 import com.my.appWordle.services.WordService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -59,6 +62,28 @@ public class WordController {
     public ResponseEntity<List<String>> getRandomWords(@PathVariable Long num) {
         List<String> randomWords = wordService.getRandomWords(num);
         return ResponseEntity.ok(randomWords);
+    }
+
+    @GetMapping("/startingWithPrefixesFromFile/{prefixesFileName}")
+    public ResponseEntity<List<String>> getWordsStartingWithPrefixesFromFile(@PathVariable String prefixesFileName) {
+        try {
+            List<String> startingWords = wordService.getWordsStartingWithPrefixesFromFile(prefixesFileName);
+            return ResponseEntity.ok(startingWords);
+        } catch (WordNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonList(e.getMessage()));
+        }
+    }
+
+    @GetMapping("/endingWithSuffixesFromFile/{suffixesFileName}")
+    public ResponseEntity<List<String>> getWordsEndingWithSuffixesFromFile(@PathVariable String suffixesFileName) {
+        try {
+            List<String> endingWords = wordService.getWordsEndingWithSuffixesFromFile(suffixesFileName);
+            return ResponseEntity.ok(endingWords);
+        } catch (WordNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(Collections.singletonList(e.getMessage()));
+        }
     }
 
 

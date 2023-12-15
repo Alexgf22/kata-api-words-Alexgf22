@@ -174,3 +174,9 @@ GET http://localhost:8080/api/words/random
 
 ### Obtener un número específico de palabras aleatorias
 GET http://localhost:8080/api/words/random/12
+
+###
+GET http://localhost:8080/api/words/startingWithPrefixesFromFile/0_prefijos.txt
+
+###
+GET http://localhost:8080/api/words/endingWithSuffixesFromFile/0_sufijos.txt
