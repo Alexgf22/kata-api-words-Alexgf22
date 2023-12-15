@@ -1,5 +1,3 @@
-// Meter el cuerpo json en post y put
-
 // Peticiones Game
 
 ### Se obtiene por defecto los 10 primeros juegos de la lista
@@ -31,27 +29,29 @@ Content-Type: application/json
   "word": "Mountain",
   "score": 85,
   "nTries": 5,
-  "dateTime": "2023-12-14T19:45:00.000+00:00",
+  "dateTime": "2023-12-14T19:37:58.288+00:00",
   "player": {
-    "userName": "Usuario6",
-    "score": 105,
+    "idPlayer": 5,
+    "userName": "Usuario4",
+    "score": 90,
     "avatarImg": null,
     "team": {
-      "idTeam": 4,
-      "score": 75,
-      "teamName": "Team 4",
+      "score": 80,
+      "teamName": "Team 5",
       "badge": null
     }
   },
   "team": {
-    "score": 75,
-    "teamName": "Team 4",
+    "idTeam": 3,
+    "score": 80,
+    "teamName": "Team 3",
     "badge": null
   },
   "game": {
-    "maxTries": 6,
-    "description": "A game with words related to nature and landscapes.",
-    "difficulty": "MEDIUM"
+    "idGame": 10,
+    "maxTries": 7,
+    "description": "A game with words that are all related to a specific natural place.",
+    "difficulty": "HARD"
   }
 }
 
@@ -66,8 +66,8 @@ Content-Type: application/json
   "dateTime": "2023-12-14T19:37:58.288+00:00"
 }
 
-### Se borra la partida con id 6
-DELETE http://localhost:8080/api/matches/6
+### Se borra la partida con id 13
+DELETE http://localhost:8080/api/matches/13
 
 
 // Peticiones Player
@@ -113,8 +113,8 @@ Content-Type: application/json
   }
 }
 
-### Se borra los datos del jugador con id 3
-DELETE http://localhost:8080/api/players/3
+### Se borra los datos del jugador con id 6
+DELETE http://localhost:8080/api/players/6
 
 
 // Peticiones Team
@@ -148,8 +148,8 @@ Content-Type: application/json
   "badge": null
 }
 
-### Se borra el equipo con id 6
-DELETE http://localhost:8080/api/teams/6
+### Se borra el equipo con id 28
+DELETE http://localhost:8080/api/teams/28
 
 
 // Peticiones Word
