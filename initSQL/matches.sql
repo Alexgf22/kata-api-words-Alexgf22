@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS `wordleapi`.`Matches` (
 
 
 
-
+# En los valores de word hay que pillar una palabra aleatoria de la lista en cada fila
 INSERT INTO `wordleapi`.`Matches` (
     `Word`,
     `Score`,
