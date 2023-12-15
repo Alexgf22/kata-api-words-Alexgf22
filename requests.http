@@ -2,64 +2,64 @@
 
 // Peticiones Game
 
-### Obtener todos los juegos, no funciona
+### Se obtiene toda la lista de juegos
 GET http://localhost:8080/api/games
 
-### Obtener el juego con id 6, no funciona
+### Se obtiene los datos del juego con id 6
 GET http://localhost:8080/api/games/6
 
 
 // Peticiones Matches
 
-### No funciona
+### Se obtiene la lista de partidas
 GET http://localhost:8080/api/matches
 
-### No funciona
+### Se obtiene los datos de la partida con id 4
 GET http://localhost:8080/api/matches/4
 
-###
+### Se crea una nueva partida
 POST http://localhost:8080/api/matches
 
-###
+### Se actualizan los datos de la partida con id 5
 PUT http://localhost:8080/api/matches/5
 
-### No funciona
+### Se borra la partida con id 6
 DELETE http://localhost:8080/api/matches/6
 
 
 // Peticiones Player
 
-###
+### Se obtiene la lista de todos los jugadores
 GET http://localhost:8080/api/players
 
-###
+### Se obtiene los datos del jugador con id 4
 GET http://localhost:8080/api/players/4
 
-###
+### Se crea un nuevo jugador
 POST http://localhost:8080/api/players
 
-###
+### Se actualizan los datos del jugador con id 8
 PUT http://localhost:8080/api/players/8
 
-### No funciona
+### Se borra los datos del jugador con id 3
 DELETE http://localhost:8080/api/players/3
 
 
 // Peticiones Team
 
-###
+### Se obtiene la lista de todos los equipos
 GET http://localhost:8080/api/teams
 
-###
+### Se obtiene el equipo con id 4
 GET http://localhost:8080/api/teams/4
 
-###
+### Se crea un nuevo equipo
 POST http://localhost:8080/api/teams
 
-###
+### Se actualizan los datos del equipo con id 6
 PUT http://localhost:8080/api/teams/6
 
-### No funciona
+### Se borra el equipo con id 6
 DELETE http://localhost:8080/api/teams/6
 
 
