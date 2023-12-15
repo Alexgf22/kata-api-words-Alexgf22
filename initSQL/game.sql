@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS `wordleApi`.`Game` (
+CREATE TABLE IF NOT EXISTS `wordleapi`.`Game` (
   `idGame` BIGINT  NOT NULL AUTO_INCREMENT,
   `Max_tries` INT NULL,
   `Description` VARCHAR(80) NULL,
@@ -9,7 +9,7 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Game` (
 
 
 
-INSERT INTO `wordleApi`.`Game` (`Max_tries`, `Description`, `Difficulty`) VALUES
+INSERT INTO `wordleapi`.`Game` (`Max_tries`, `Description`, `Difficulty`) VALUES
         (6, 'A game with words that are all related to a specific time period.', 'NORMAL'),
         (7, 'A game with words that are all related to a specific event.', 'HARD'),
         (5, 'A game with words that are all related to a specific person.', 'EASY'),

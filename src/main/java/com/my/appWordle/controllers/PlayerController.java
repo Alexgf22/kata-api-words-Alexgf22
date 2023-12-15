@@ -1,5 +1,6 @@
 package com.my.appWordle.controllers;
 
+import com.my.appWordle.models.Matches;
 import com.my.appWordle.models.Player;
 import com.my.appWordle.services.PlayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,17 @@ public class PlayerController {
             List<Player> players = playerService.getAllPlayers();
             return players.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(players);
         }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Player>> getAllPlayersList() {
+        // Se obtiene la lista de todos los jugadores
+        List<Player> players = playerService.getAllPlayers();
+        return getResponseEntityForList(players);
+    }
+
+    private <T> ResponseEntity<List<T>> getResponseEntityForList(List<T> list) {
+        return list.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(list);
     }
 
 

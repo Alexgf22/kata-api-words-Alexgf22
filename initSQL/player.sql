@@ -1,6 +1,6 @@
 
 
-CREATE TABLE IF NOT EXISTS `wordleApi`.`Player` (
+CREATE TABLE IF NOT EXISTS `wordleapi`.`Player` (
         `idPlayer` BIGINT NOT NULL AUTO_INCREMENT,
         `User_name` VARCHAR(45) NULL,
         `Score` INT NULL,
@@ -10,7 +10,7 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Player` (
         INDEX `fk_Player_Team_idx` (`Team_idTeam` ASC) VISIBLE,
         CONSTRAINT `fk_Player_Team`
             FOREIGN KEY (`Team_idTeam`)
-                REFERENCES `wordleApi`.`Team` (`idTeam`)
+                REFERENCES `wordleapi`.`Team` (`idTeam`)
                 ON DELETE NO ACTION
                 ON UPDATE NO ACTION
 ) ENGINE = InnoDB;
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Player` (
 
 
 
-INSERT INTO `wordleApi`.`Player` (`User_name`, `Score`, `Avatar_Img`, `Team_idTeam`) VALUES
+INSERT INTO `wordleapi`.`Player` (`User_name`, `Score`, `Avatar_Img`, `Team_idTeam`) VALUES
          ('Usuario1', 100, NULL, 1),
          ('Usuario2', 120, NULL, 1),
          ('Usuario3', 80, NULL, 2),

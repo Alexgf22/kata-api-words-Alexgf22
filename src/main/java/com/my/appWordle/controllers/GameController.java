@@ -21,16 +21,19 @@ public class GameController {
     @GetMapping
     public ResponseEntity<?> getAllGames(@RequestParam(required = false, defaultValue = "0") int page,
                                          @RequestParam(required = false, defaultValue = "10") int size) {
-        if (page > 0 || size > 0) {
-            // Si se proporcionan parámetros de paginación, obtener juegos paginados
-            PageRequest pageRequest = PageRequest.of(page, size);
-            Page<Game> games = gameService.getAllGamesWithPagination(pageRequest);
-            return games.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(games);
-        } else {
-            // Si no se proporcionan parámetros, obtener todos los juegos
-            List<Game> games = gameService.getAllGames();
-            return getResponseEntityForList(games);
-        }
+
+        // Si se proporcionan parámetros de paginación, obtener juegos paginados
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Game> games = gameService.getAllGamesWithPagination(pageRequest);
+        return games.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(games);
+
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Game>> getAllGamesList() {
+        // Se obtiene la lista de todos los juegos
+        List<Game> games = gameService.getAllGames();
+        return getResponseEntityForList(games);
     }
 
 

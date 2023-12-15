@@ -2,8 +2,11 @@
 
 // Peticiones Game
 
-### Se obtiene toda la lista de juegos
+### Se obtiene por defecto los 10 primeros juegos de la lista
 GET http://localhost:8080/api/games
+
+### Se obtiene toda la lista de juegos
+GET http://localhost:8080/api/games/all
 
 ### Se obtiene los datos del juego con id 6
 GET http://localhost:8080/api/games/6
@@ -11,8 +14,11 @@ GET http://localhost:8080/api/games/6
 
 // Peticiones Matches
 
-### Se obtiene la lista de partidas
+### Se obtiene por defecto las 10 primeras partidas de la lista
 GET http://localhost:8080/api/matches
+
+### Se obtiene toda la lista de las partidas
+GET http://localhost:8080/api/matches/all
 
 ### Se obtiene los datos de la partida con id 4
 GET http://localhost:8080/api/matches/4
@@ -29,8 +35,11 @@ DELETE http://localhost:8080/api/matches/6
 
 // Peticiones Player
 
-### Se obtiene la lista de todos los jugadores
+### Se obtiene por defecto los 10 primeros jugadores de la lista
 GET http://localhost:8080/api/players
+
+### Se obtiene la lista de todos los jugadores
+GET http://localhost:8080/api/players/all
 
 ### Se obtiene los datos del jugador con id 4
 GET http://localhost:8080/api/players/4

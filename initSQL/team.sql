@@ -1,7 +1,7 @@
 
 
 
-CREATE TABLE IF NOT EXISTS `wordleApi`.`Team`
+CREATE TABLE IF NOT EXISTS `wordleapi`.`Team`
 (
     `idTeam`    BIGINT         NOT NULL AUTO_INCREMENT,
     `Score`     INT         NULL,
@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Team`
 
 
 
-INSERT INTO `wordleApi`.`Team` (`Score`, `Team_name`, `Badge`) VALUES
+INSERT INTO `wordleapi`.`Team` (`Score`, `Team_name`, `Badge`) VALUES
      (100, 'Team 1', NULL),
      (90, 'Team 2', NULL),
      (80, 'Team 3', NULL),

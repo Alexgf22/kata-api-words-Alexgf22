@@ -2,9 +2,8 @@ version: "3.1"
 services:
 
   db:
-    image: mysql
+    image: mysql:latest
     environment:
-      MYSQL_ROOT_USER: root
       MYSQL_ROOT_PASSWORD: Super
       MYSQL_DATABASE: wordleapi
     volumes:

@@ -1,6 +1,6 @@
 
 
-CREATE TABLE IF NOT EXISTS `wordleApi`.`Game_has_Word` (
+CREATE TABLE IF NOT EXISTS `wordleapi`.`Game_has_Word` (
    `Game_idGame` BIGINT NOT NULL,
    `Word_idWord` BIGINT NOT NULL,
    `Difficulty` ENUM('EASY', 'NORMAL', 'HARD') NOT NULL,
@@ -9,12 +9,12 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Game_has_Word` (
    INDEX `fk_Game_has_Word1_Game1_idx` (`Game_idGame` ASC) VISIBLE,
    CONSTRAINT `fk_Game_has_Word1_Game1`
        FOREIGN KEY (`Game_idGame`)
-           REFERENCES `wordleApi`.`Game` (`idGame`)
+           REFERENCES `wordleapi`.`Game` (`idGame`)
            ON DELETE NO ACTION
            ON UPDATE NO ACTION,
    CONSTRAINT `fk_Game_has_Word1_Word1`
        FOREIGN KEY (`Word_idWord`)
-           REFERENCES `wordleApi`.`Word` (`idWord`)
+           REFERENCES `wordleapi`.`Word` (`idWord`)
            ON DELETE NO ACTION
            ON UPDATE NO ACTION)
     ENGINE = InnoDB;

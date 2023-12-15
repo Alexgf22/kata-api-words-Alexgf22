@@ -1,5 +1,6 @@
 package com.my.appWordle.controllers;
 
+import com.my.appWordle.models.Game;
 import com.my.appWordle.models.Matches;
 import com.my.appWordle.services.MatchesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,24 @@ public class MatchesController {
     @GetMapping
     public ResponseEntity<?> getAllMatches(@RequestParam(required = false, defaultValue = "0") int page,
                                            @RequestParam(required = false, defaultValue = "10") int size) {
-        if (page > 0 || size > 0) {
-            // Si se proporcionan parámetros de paginación, obtener partidas paginadas
-            PageRequest pageRequest = PageRequest.of(page, size);
-            Page<Matches> matchesPage = matchesService.getAllMatchesWithPagination(pageRequest);
 
-            return ResponseEntity.ok(matchesPage);
-        } else {
-            // Si no se proporcionan parámetros, obtener todas las partidas
-            List<Matches> matches = matchesService.getAllMatches();
-            return matches.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(matches);
-        }
+        // Si se proporcionan parámetros de paginación, obtener partidas paginadas
+        PageRequest pageRequest = PageRequest.of(page, size);
+        Page<Matches> matchesPage = matchesService.getAllMatchesWithPagination(pageRequest);
+
+        return ResponseEntity.ok(matchesPage);
+
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<Matches>> getAllMatchesList() {
+        // Se obtiene la lista de todos las partidas
+        List<Matches> matches = matchesService.getAllMatches();
+        return getResponseEntityForList(matches);
+    }
+
+    private <T> ResponseEntity<List<T>> getResponseEntityForList(List<T> list) {
+        return list.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(list);
     }
 
 

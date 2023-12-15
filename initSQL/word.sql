@@ -1,6 +1,6 @@
 
 
-CREATE TABLE IF NOT EXISTS `wordleApi`.`Word`
+CREATE TABLE IF NOT EXISTS `wordleapi`.`Word`
 (
     `idWord` BIGINT       NOT NULL AUTO_INCREMENT,
     `Word`   VARCHAR(45) NULL,
@@ -11,7 +11,7 @@ CREATE TABLE IF NOT EXISTS `wordleApi`.`Word`
 
 
 
-INSERT INTO `wordleApi`.`Word` (`Word`) VALUES
+INSERT INTO `wordleapi`.`Word` (`Word`) VALUES
   ('Sun'),
   ('Moon'),
   ('Cat'),
