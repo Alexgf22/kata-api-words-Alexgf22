@@ -21,8 +21,8 @@ public class Player {
     @Column(name = "Avatar_Img")
     private byte[] avatarImg;
 
-    @ManyToOne
-    @JoinColumn(name = "Team_idTeam")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "Team_idTeam", referencedColumnName = "idTeam")
     private Team team;
 
     // Getters y setters

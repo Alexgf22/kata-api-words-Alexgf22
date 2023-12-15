@@ -23,16 +23,16 @@ public class Matches {
     @Column(name = "Date_time")
     private Date dateTime;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "Player_idPlayer", referencedColumnName = "idPlayer")
     private Player player;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "Player_Team_idTeam", referencedColumnName = "idTeam")
     private Team team;
 
-    @ManyToOne
-    @JoinColumn(name = "Game_idGame")
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "Game_idGame", referencedColumnName = "idGame")
     private Game game;
 
 

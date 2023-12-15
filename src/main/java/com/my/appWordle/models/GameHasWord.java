@@ -12,12 +12,12 @@ public class GameHasWord {
     @Column(name = "Difficulty", nullable = false)
     private Difficulty difficulty;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     //@MapsId("gameId")
     //@JoinColumn(name = "Game_idGame")
     private Game game;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     //@MapsId("wordId")
     //@JoinColumn(name = "Word_idWord")
     private Word word;
