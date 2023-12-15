@@ -2,6 +2,7 @@ package com.my.appWordle.services;
 
 import com.my.appWordle.error.PlayerNotFoundException;
 import com.my.appWordle.models.Player;
+import com.my.appWordle.models.Team;
 import com.my.appWordle.repositories.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -44,6 +45,12 @@ public class PlayerService {
         existingPlayer.setUserName(updatedPlayer.getUserName());
         existingPlayer.setScore(updatedPlayer.getScore());
         existingPlayer.setAvatarImg(updatedPlayer.getAvatarImg());
+
+        // Actualizar la relación con el equipo de forma manual
+        Team updatedTeam = updatedPlayer.getTeam();
+        if (updatedTeam != null) {
+            existingPlayer.setTeam(updatedTeam);
+        }
 
         return playerRepository.save(existingPlayer);
     }
