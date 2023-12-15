@@ -24,10 +24,47 @@ GET http://localhost:8080/api/matches/all
 GET http://localhost:8080/api/matches/4
 
 ### Se crea una nueva partida
-POST http://localhost:8080/api/matches
+POST http://localhost:8080/api/matches HTTP/1.1
+Content-Type: application/json
+
+{
+  "word": "Mountain",
+  "score": 85,
+  "nTries": 5,
+  "dateTime": "2023-12-14T19:45:00.000+00:00",
+  "player": {
+    "userName": "Usuario6",
+    "score": 105,
+    "avatarImg": null,
+    "team": {
+      "idTeam": 4,
+      "score": 75,
+      "teamName": "Team 4",
+      "badge": null
+    }
+  },
+  "team": {
+    "score": 75,
+    "teamName": "Team 4",
+    "badge": null
+  },
+  "game": {
+    "maxTries": 6,
+    "description": "A game with words related to nature and landscapes.",
+    "difficulty": "MEDIUM"
+  }
+}
 
 ### Se actualizan los datos de la partida con id 5
-PUT http://localhost:8080/api/matches/5
+PUT http://localhost:8080/api/matches/5 HTTP/1.1
+Content-Type: application/json
+
+{
+  "Word": "UpdatedWord",
+  "Score": 100,
+  "N_tries": 2,
+  "Date_time": "2023-12-14T19:37:58.288+00:00"
+}
 
 ### Se borra la partida con id 6
 DELETE http://localhost:8080/api/matches/6
@@ -45,10 +82,36 @@ GET http://localhost:8080/api/players/all
 GET http://localhost:8080/api/players/4
 
 ### Se crea un nuevo jugador
-POST http://localhost:8080/api/players
+POST http://localhost:8080/api/players HTTP/1.1
+Content-Type: application/json
+
+{
+  "userName": "NuevoUsuario",
+  "score": 100,
+  "avatarImg": null,
+  "team": {
+    "idTeam": 4,
+    "score": 70,
+    "teamName": "TeamName 4",
+    "badge": null
+  }
+}
 
 ### Se actualizan los datos del jugador con id 8
-PUT http://localhost:8080/api/players/8
+PUT http://localhost:8080/api/players/8 HTTP/1.1
+Content-Type: application/json
+
+{
+  "userName": "NuevoUsuario",
+  "score": 92,
+  "avatarImg": null,
+  "team": {
+    "idTeam": 4,
+    "score": 90,
+    "teamName": "NuevoEquipo",
+    "badge": null
+  }
+}
 
 ### Se borra los datos del jugador con id 3
 DELETE http://localhost:8080/api/players/3
@@ -66,10 +129,24 @@ GET http://localhost:8080/api/teams/all
 GET http://localhost:8080/api/teams/4
 
 ### Se crea un nuevo equipo
-POST http://localhost:8080/api/teams
+POST http://localhost:8080/api/teams HTTP/1.1
+Content-Type: application/json
+
+{
+  "teamName": "NuevoEquipo",
+  "score": 80,
+  "badge": null
+}
 
 ### Se actualizan los datos del equipo con id 6
-PUT http://localhost:8080/api/teams/6
+PUT http://localhost:8080/api/teams/6 HTTP/1.1
+Content-Type: application/json
+
+{
+  "teamName": "NuevoNombreEquipo",
+  "score": 90,
+  "badge": null
+}
 
 ### Se borra el equipo con id 6
 DELETE http://localhost:8080/api/teams/6
